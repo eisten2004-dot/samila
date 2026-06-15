@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Meeting with an Old Friend · Interactive Class · A2–B1</title>
+<style>
+:root{
+  --bg:#eef1fb;--bg2:#e4e8fa;--card:#ffffff;--ink:#1f2547;--muted:#6b7090;
+  --brand:#5b5bf6;--brand2:#7c4dff;--accent:#ff8a3d;--green:#22c55e;--red:#ef4444;
+  --gold:#fbbf24;--border:#e7e8f5;--soft:#f6f7ff;--radius:22px;
+  --id:#7c4dff;--idbg:#f1ecff;--pv:#0ea5a3;--pvbg:#e6fbfa;
+  --shadow:0 10px 30px rgba(20,18,80,.10),0 2px 6px rgba(20,18,80,.06);
+}
+html[data-theme="dark"]{
+  --bg:#0d1024;--bg2:#161a3a;--card:#1b1f44;--ink:#eaecff;--muted:#a6abd6;
+  --border:#2c3266;--soft:#222863;--idbg:#2a2358;--pvbg:#10353a;
+  --shadow:0 12px 34px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:linear-gradient(160deg,var(--bg),var(--bg2));min-height:100vh;
+  font:17px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+
+/* ---------- TOP BAR ---------- */
+.top{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:11px 20px;background:rgba(20,22,52,.92);backdrop-filter:blur(10px);color:#fff}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}
+.logo .mk{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;font-size:20px}
+.top .sp{flex:1}
+.hud{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.13);border-radius:999px;padding:7px 13px;font-weight:700;font-size:15px}
+.hud.gold{color:var(--gold)}
+.tg{cursor:pointer;border:0;font:inherit;font-weight:700;color:#fff;background:rgba(255,255,255,.13);border-radius:999px;padding:8px 14px}
+.tg:hover{background:rgba(255,255,255,.24)}
+.bar{height:9px;background:rgba(255,255,255,.16);border-radius:999px;overflow:hidden;flex-basis:100%;margin-top:4px}
+.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:999px;transition:width .5s ease}
+
+/* ---------- TABS ---------- */
+.tabs{position:sticky;top:55px;z-index:55;display:flex;gap:8px;overflow-x:auto;padding:12px 16px;
+  background:linear-gradient(180deg,rgba(20,22,52,.0),rgba(20,22,52,0));scrollbar-width:thin}
+.tab{white-space:nowrap;cursor:pointer;border:2px solid transparent;font:inherit;font-weight:800;font-size:15px;
+  color:var(--ink);background:var(--card);border-radius:999px;padding:10px 18px;box-shadow:var(--shadow);transition:.15s}
+.tab:hover{transform:translateY(-2px)}
+.tab.on{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
+
+/* ---------- LAYOUT ---------- */
+.wrap{max-width:1020px;margin:0 auto;padding:20px 16px 110px}
+.view{display:none;animation:pop .4s ease}
+.view.on{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.slide{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;margin:0 0 22px}
+.tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--brand);background:var(--idbg);padding:5px 12px;border-radius:999px;margin-bottom:10px}
+h1{font-size:34px;line-height:1.15;margin:.1em 0 .3em}
+h2{font-size:27px;margin:.1em 0 .35em}
+h3{font-size:21px;margin:.2em 0 .3em}
+p.lead{font-size:19px;color:var(--muted);margin:.2em 0 1em}
+.muted{color:var(--muted)}
+.center{text-align:center}
+
+/* ---------- GHIBLI IMAGE FRAMES ---------- */
+.scene{display:grid;grid-template-columns:1fr;gap:0;margin:18px 0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+.scene .art{position:relative;aspect-ratio:16/9;display:grid;place-items:center;text-align:center;color:#fff;padding:22px;
+  background:linear-gradient(135deg,#6d8bd0,#9bc1bc 55%,#f3d9a4);overflow:hidden}
+.scene .art::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 45%),radial-gradient(circle at 80% 80%,rgba(255,255,255,.18),transparent 40%)}
+.scene .art .em{font-size:60px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));position:relative;z-index:1}
+.scene .art .lbl{position:absolute;top:12px;left:12px;background:rgba(15,18,38,.55);color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:5px 11px;border-radius:999px;z-index:1}
+.scene .art .ghb{position:absolute;bottom:12px;right:12px;background:rgba(15,18,38,.55);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;z-index:1}
+.scene .meta{background:var(--soft);padding:14px 16px}
+.scene .meta .prm{font-size:14px;color:var(--muted);margin:0 0 8px}
+.scene .meta .prm b{color:var(--pv)}
+.scene .meta .obs{font-size:16px;font-weight:700;margin:0;display:flex;gap:8px;align-items:flex-start}
+.scene .meta .obs::before{content:"👁";flex:0 0 auto}
+
+/* ---------- STORY TEXT ---------- */
+.story{font-size:18.5px;line-height:1.75}
+.story p{margin:0 0 14px}
+.id{font-weight:800;color:var(--id);background:var(--idbg);padding:1px 7px;border-radius:7px;white-space:nowrap}
+.pv{font-weight:800;color:var(--pv);background:var(--pvbg);padding:1px 7px;border-radius:7px;white-space:nowrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;font-weight:700;margin:0 0 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:13px;height:13px;border-radius:4px;display:inline-block}
+
+/* ---------- WORD CHIPS / VOCAB ---------- */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:8px 0 4px}
+.vcard{border:2px solid var(--border);border-radius:16px;padding:14px;background:var(--soft);text-align:center;transition:.15s;cursor:default}
+.vcard:hover{transform:translateY(-3px);border-color:var(--brand)}
+.vcard .em{font-size:34px}
+.vcard .w{font-weight:800;font-size:18px;margin-top:4px}
+.vcard .pr{font-size:13px;color:var(--pv);font-weight:700}
+.vcard .es{font-size:13px;color:var(--muted)}
+.xp{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 14px}
+.xp .it{flex:1 1 220px;border:2px solid var(--border);border-radius:14px;padding:12px 14px;background:var(--soft)}
+.xp .it .h{font-weight:800}
+.xp .it .h .em{margin-right:6px}
+.xp .it .s{font-size:14px;color:var(--muted);font-style:italic}
+
+/* ---------- QUESTION BLOCKS ---------- */
+.qset{margin:10px 0}
+.qhead{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin:18px 0 10px}
+.qhead .n{background:var(--idbg);border-radius:999px;padding:3px 11px;font-size:13px}
+.q{border:2px solid var(--border);border-radius:16px;padding:16px 18px;margin:0 0 12px;background:var(--card)}
+.q .qt{font-size:17px;font-weight:700;margin:0 0 10px}
+.q .qt .num{color:var(--brand);margin-right:6px}
+.opts{display:grid;gap:9px}
+.opt{font:inherit;font-size:16px;text-align:left;padding:12px 15px;border:2px solid var(--border);border-radius:12px;
+  background:var(--card);color:var(--ink);cursor:pointer;transition:.14s}
+.opt:hover{border-color:var(--brand);transform:translateX(3px)}
+.opt.ok{border-color:var(--green);background:rgba(34,197,94,.13)}
+.opt.no{border-color:var(--red);background:rgba(239,68,68,.13)}
+.opt:disabled{cursor:default;opacity:.85}
+.tf{display:flex;gap:10px}
+.tf .opt{flex:1;text-align:center;font-weight:800}
+.fb{font-size:15px;font-weight:700;margin-top:8px;min-height:20px}
+.fb.good{color:var(--green)}
+.fb.bad{color:var(--red)}
+.open textarea{font:inherit;width:100%;min-height:64px;padding:11px 13px;border:2px solid var(--border);border-radius:12px;background:var(--soft);color:var(--ink);resize:vertical}
+.reveal{margin-top:9px}
+.reveal button{font:inherit;font-weight:700;font-size:14px;color:var(--brand);background:var(--idbg);border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
+.reveal button:hover{filter:brightness(.96)}
+.sample{display:none;margin-top:9px;font-size:15px;background:var(--soft);border-left:4px solid var(--brand);border-radius:8px;padding:10px 13px}
+.sample.show{display:block}
+.sample b{color:var(--brand)}
+
+/* ---------- MODEL STORY / SPEAK ---------- */
+.model{background:linear-gradient(135deg,var(--idbg),var(--pvbg));border:2px dashed var(--brand2);border-radius:18px;padding:18px 20px;margin:14px 0}
+.model .lab{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--brand2);margin-bottom:6px}
+.model p{margin:0;font-size:17.5px;line-height:1.7}
+.speak{background:var(--soft);border:2px solid var(--border);border-radius:16px;padding:16px 18px;margin:12px 0}
+.speak .ttl{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.speak ul{margin:6px 0 0;padding-left:22px}
+.speak li{margin:5px 0}
+.finalq{background:var(--idbg);border-radius:14px;padding:13px 16px;font-weight:700;margin-top:12px}
+.finalq .l{font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--brand);display:block;margin-bottom:3px}
+
+/* ---------- GAMES ---------- */
+.gcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin:0 0 22px;border:1px solid var(--border)}
+.gcard .gtag{display:inline-block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));padding:5px 12px;border-radius:999px;margin-bottom:8px}
+.ginfo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 14px}
+.ginfo .b{background:var(--soft);border-radius:12px;padding:11px 14px;font-size:14.5px}
+.ginfo .b b{display:block;color:var(--brand);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.gscore{font-weight:800;color:var(--brand)}
+.gboard{margin-top:8px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cards .mc{aspect-ratio:1;border-radius:14px;border:2px solid var(--border);background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:15px;cursor:pointer;text-align:center;padding:6px;transition:.2s;transform-style:preserve-3d}
+.cards .mc.flip{background:var(--card);color:var(--ink);border-color:var(--brand)}
+.cards .mc.done{background:rgba(34,197,94,.16);color:var(--ink);border-color:var(--green);cursor:default}
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin:8px 0}
+.token{border:2px solid var(--border);border-radius:999px;padding:9px 15px;font-weight:700;background:var(--soft);cursor:grab;font-size:15px}
+.token.used{opacity:.35;cursor:default}
+.drops{display:grid;gap:9px;margin:8px 0}
+.drop{display:flex;align-items:center;gap:10px;border:2px dashed var(--border);border-radius:12px;padding:10px 13px;min-height:50px;background:var(--card)}
+.drop .lab{flex:1;font-size:15.5px}
+.drop .slot{min-width:120px;min-height:34px;border-radius:999px;border:2px dashed var(--brand);display:grid;place-items:center;font-weight:700;color:var(--muted);font-size:14px;padding:4px 10px}
+.drop.ok{border-color:var(--green);background:rgba(34,197,94,.10)}
+.drop.ok .slot{border-style:solid;border-color:var(--green);color:var(--ink)}
+.ginput{font:inherit;font-size:16px;padding:11px 14px;border:2px solid var(--border);border-radius:12px;background:var(--soft);color:var(--ink);width:200px;max-width:60%}
+.gbtn{font:inherit;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 5px 14px rgba(91,91,246,.4);transition:.15s}
+.gbtn:hover{transform:translateY(-2px)}
+.gbtn.ghost{background:var(--soft);color:var(--ink);box-shadow:none;border:2px solid var(--border)}
+.gridhunt{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:8px 0}
+.gridhunt .cell{aspect-ratio:1;border-radius:10px;border:2px solid var(--border);background:var(--soft);display:grid;place-items:center;font-size:22px;cursor:pointer;transition:.15s}
+.gridhunt .cell:hover{border-color:var(--brand)}
+.gridhunt .cell.hit{background:rgba(34,197,94,.18);border-color:var(--green)}
+.gridhunt .cell.miss{background:rgba(239,68,68,.14);border-color:var(--red)}
+.spinwrap{text-align:center;margin:10px 0}
+.spinner{font-size:30px;font-weight:800;min-height:46px;display:grid;place-items:center;background:var(--soft);border-radius:14px;padding:14px;margin-bottom:10px}
+.builder{display:grid;gap:9px;margin:8px 0}
+.bstep{display:flex;gap:9px;align-items:center}
+.bstep .num{width:30px;height:30px;border-radius:999px;background:var(--idbg);color:var(--brand);font-weight:800;display:grid;place-items:center;flex:0 0 auto}
+.bsent{flex:1;border:2px solid var(--border);border-radius:12px;padding:10px 13px;font-size:15.5px;background:var(--card);cursor:pointer}
+.bsent.sel{border-color:var(--brand2);background:var(--idbg)}
+.bsent.ok{border-color:var(--green);background:rgba(34,197,94,.1)}
+
+/* ---------- BUTTONS / NAV ---------- */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:center;align-items:center;gap:12px;
+  padding:12px;background:rgba(20,22,52,.94);backdrop-filter:blur(8px)}
+.btn{font:inherit;font-weight:800;font-size:16px;padding:12px 26px;border-radius:999px;border:0;cursor:pointer;transition:.15s}
+.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 6px 16px rgba(91,91,246,.45)}
+.btn.ghost{background:rgba(255,255,255,.14);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
+.btn:hover:not(:disabled){transform:translateY(-2px)}
+.navinfo{color:#fff;font-weight:700;font-size:14px;opacity:.85}
+
+.unitnavwrap{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.upill{cursor:pointer;border:2px solid var(--border);background:var(--card);color:var(--ink);font:inherit;font-weight:800;font-size:14px;border-radius:12px;padding:8px 13px;transition:.15s}
+.upill:hover{transform:translateY(-2px)}
+.upill.on{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
+
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:80;
+  background:var(--ink);color:var(--card);font-weight:800;padding:12px 22px;border-radius:999px;box-shadow:var(--shadow);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:680px){
+  .ginfo,.cards{grid-template-columns:1fr 1fr}
+  .gridhunt{grid-template-columns:repeat(4,1fr)}
+  h1{font-size:27px}h2{font-size:23px}
+  .slide,.gcard{padding:20px}
+  .tabs{top:52px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo"><span class="mk">👯</span> Meeting with an Old Friend</div>
+  <div class="sp"></div>
+  <div class="hud">⭐ <span id="xp">0</span> XP</div>
+  <div class="hud gold">🏆 <span id="done">0</span></div>
+  <button class="tg" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
+  <div class="bar"><i id="progbar"></i></div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="wrap" id="wrap"></div>
+
+<div class="nav">
+  <button class="btn ghost" onclick="prevTab()">◀ Back</button>
+  <span class="navinfo" id="navinfo"></span>
+  <button class="btn primary" onclick="nextTab()">Next ▶</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CORE VOCABULARY (Semana 24 — Meeting with an Old Friend)
+   ============================================================ */
+const VOCAB=[
+ {w:"Friends",pr:"frends",es:"Amigos",em:"👫"},
+ {w:"Buddy",pr:"bá-di",es:"Compañero",em:"🤝"},
+ {w:"Classmate",pr:"klás-meit",es:"Compañero de clase",em:"🎒"},
+ {w:"Meet",pr:"miit",es:"Encontrarse",em:"🙋"},
+ {w:"Laugh",pr:"laf",es:"Reír",em:"😂"},
+ {w:"Hug",pr:"jag",es:"Abrazar",em:"🤗"},
+ {w:"Talk",pr:"tok",es:"Hablar",em:"💬"},
+ {w:"Greet",pr:"griit",es:"Saludar",em:"👋"},
+ {w:"Walk",pr:"uók",es:"Caminar",em:"🚶"},
+ {w:"Play",pr:"plái",es:"Jugar",em:"⚽"},
+ {w:"Happy",pr:"já-pi",es:"Feliz",em:"😄"},
+ {w:"Surprised",pr:"ser-práizd",es:"Sorprendido",em:"😲"},
+ {w:"Smile",pr:"smáil",es:"Sonrisa",em:"🙂"},
+ {w:"Excited",pr:"ek-sái-tid",es:"Emocionado",em:"🤩"},
+ {w:"Relaxed",pr:"ri-lákst",es:"Relajado",em:"😌"},
+ {w:"Park",pr:"park",es:"Parque",em:"🌳"},
+ {w:"School",pr:"skúul",es:"Escuela",em:"🏫"},
+ {w:"Home",pr:"jóum",es:"Casa",em:"🏠"},
+ {w:"Coffee shop",pr:"kó-fi shop",es:"Cafetería",em:"☕"},
+ {w:"Mall",pr:"mol",es:"Centro comercial",em:"🛍️"},
+ {w:"Memories",pr:"mé-mo-ris",es:"Recuerdos",em:"💭"},
+ {w:"Childhood",pr:"cháild-jud",es:"Infancia",em:"🧸"},
+ {w:"Trip",pr:"trip",es:"Viaje",em:"🧳"},
+ {w:"Reunion",pr:"ri-iú-nion",es:"Reunión",em:"🎉"},
+ {w:"Gift",pr:"gift",es:"Regalo",em:"🎁"}
+];
+
+/* ============================================================
+   UNITS — 10 storytellings, each with idioms/PV in order,
+   4–6 Ghibli scenes, model story, and 4 question sets.
+   Characters: Lucas & Sofía (childhood friends) appear across
+   all units for continuity.
+   ============================================================ */
+const UNITS=[];
+/* unit-blocks: story = array of {p:"text"} or {img:{prompt,q,em,lbl}} */
+
+const CHARS="Lucas (a young man with short dark hair, a green jacket and kind eyes) and Sofía (a young woman with curly brown hair, a yellow scarf and a bright smile)";
+
+UNITS.push({
+ n:1, title:"Long Time No See", theme:"Meeting an old friend on the street",
+ idioms:[{en:"Long time no see",es:"Cuánto tiempo sin verte"},{en:"A blast from the past",es:"Algo o alguien del pasado que reaparece"}],
+ pvs:[{en:"Catch up",es:"Ponerse al día"},{en:"Run into",es:"Encontrarse por casualidad"}],
+ story:[
+  {p:`On a sunny Saturday morning, Lucas walked slowly through the busy city center. He needed a <b>gift</b> for his sister, so he went from shop to shop with a small <b>smile</b> on his face.`},
+  {img:{em:"🏙️",lbl:"Unit 1 · Scene 1",prompt:`Studio-Ghibli style: ${CHARS}. Here we only see Lucas, a young man with short dark hair and a green jacket, walking through a sunny, busy city center with small shopping bags. Soft watercolor light, warm colors, gentle morning glow, hand-painted clouds.`,q:"What is Lucas doing? How does he feel? Where is he?"}},
+  {p:`Suddenly, near a small <b>coffee shop</b>, he saw a woman with curly hair and a familiar <b>laugh</b>. His heart jumped. It was Sofía, his old <b>classmate</b> from primary school!`},
+  {img:{em:"☕",lbl:"Unit 1 · Scene 2",prompt:`Studio-Ghibli style: Lucas (green jacket, short dark hair) stops and stares, surprised, near a cosy coffee shop with warm yellow windows. In front of him, Sofía, a young woman with curly brown hair and a yellow scarf, is laughing. Magical, nostalgic atmosphere, soft light.`,q:"Who does Lucas see? What is her name? How do you think Lucas feels — happy or sad?"}},
+  {p:`"Sofía? Is that really you? <id>Long time no see</id>!" Lucas said, very <b>surprised</b>. Sofía turned around and her eyes opened wide. "Lucas! I can't believe it!" she answered, and gave him a warm <b>hug</b>.`},
+  {img:{em:"🤗",lbl:"Unit 1 · Scene 3",prompt:`Studio-Ghibli style: ${CHARS} share a warm, friendly hug in the middle of the street. Both have big happy smiles. People walk softly in the background. Emotional reunion, golden afternoon light, tender mood.`,q:"What are the two friends doing? Why are they hugging?"}},
+  {p:`For a moment, both friends felt like children again. Seeing Sofía was <id>a blast from the past</id> for Lucas. He remembered their old <b>school</b>, their games in the <b>park</b>, and their happy <b>childhood</b> days together.`},
+  {img:{em:"🌳",lbl:"Unit 1 · Scene 4",prompt:`Studio-Ghibli style memory/flashback: the same two characters but as small children — little Lucas and little Sofía — playing happily in a green park with tall trees, a swing and falling leaves. Dreamy, faded, nostalgic colors like an old photograph.`,q:"What does Lucas remember? When were these memories from?"}},
+  {p:`"We have so many things to tell each other," Sofía said. "Let's sit down and <pv>catch up</pv> over a hot coffee." Lucas was very <b>excited</b> and said yes at once. While they walked to a table, Sofía smiled. "It is so strange to <pv>run into</pv> you here today, after ten years!" "Strange and wonderful," Lucas said. That morning, two old friends started a new chapter of their long friendship.`},
+  {img:{em:"🪑",lbl:"Unit 1 · Scene 5",prompt:`Studio-Ghibli style: ${CHARS} sit together at a small wooden table inside a warm coffee shop, two steaming cups between them, talking happily and leaning forward. Cosy interior, plants on the window, soft afternoon light.`,q:"Where are they now? What are they going to do together?"}}
+ ],
+ model:`Last week I <span class="pv">ran into</span> my old friend Daniel on the street. I said, "<span class="id">Long time no see</span>!" Seeing him was <span class="id">a blast from the past</span>. We went to a coffee shop to <span class="pv">catch up</span>. I felt very happy and surprised!`,
+ finalq:{en:"What do you usually say when you meet a friend on the street?",es:"¿Qué sueles decir cuando te encuentras con un amigo en la calle?"},
+ mc:[
+  {q:"Where was Lucas at the beginning of the story?",opts:["At the beach","In the busy city center","At his school","At the airport"],a:1},
+  {q:"Why was Lucas in the city center?",opts:["To find a gift for his sister","To meet a teacher","To buy a coffee machine","To find a new job"],a:0},
+  {q:"Who did Lucas meet?",opts:["His brother","A stranger","Sofía, his old classmate","His boss"],a:2},
+  {q:"What did the two friends decide to do?",opts:["Go home immediately","Catch up over a coffee","Take a long trip","Call their families"],a:1},
+  {q:"How long had it been since they last saw each other?",opts:["One week","Two months","Five days","Ten years"],a:3}
+ ],
+ tf:[
+  {q:"Lucas was looking for a gift for his brother.",a:false},
+  {q:"Sofía and Lucas were classmates in primary school.",a:true},
+  {q:"Lucas felt sad and angry when he saw Sofía.",a:false},
+  {q:"They met near a coffee shop.",a:true},
+  {q:"They had seen each other only last week.",a:false}
+ ],
+ open:[
+  "How do you think Lucas felt when he saw Sofía? Why?",
+  "What do you say when you meet a friend you have not seen for a long time?",
+  "Where do you like to go to catch up with an old friend?",
+  "Describe a time when you ran into someone you knew.",
+  "Why are old friends special to us?"
+ ],
+ recall:[
+  {q:"Which idiom in the story means 'we have not seen each other for a long time'?",a:"Long time no see."},
+  {q:"Find the idiom that means 'something or someone from the past that comes back'.",a:"A blast from the past."},
+  {q:"Which phrasal verb means 'to talk and share recent news'?",a:"Catch up."},
+  {q:"Which phrasal verb means 'to meet someone by chance'?",a:"Run into."},
+  {q:"What word in the story means 'to hold someone warmly in your arms'?",a:"Hug."}
+ ]
+});
+
+UNITS.push({
+ n:2, title:"Through Thick and Thin", theme:"Talking about friendship and how friends meet",
+ idioms:[{en:"Hit it off",es:"Congeniar / llevarse bien desde el principio"},{en:"Through thick and thin",es:"En las buenas y en las malas"}],
+ pvs:[{en:"Get along",es:"Llevarse bien"},{en:"Hang out",es:"Pasar el rato"}],
+ story:[
+  {p:`At the coffee shop, Lucas and Sofía sat down with their warm cups. Sofía asked, "Tell me, how did you meet your best friend at work?" Lucas began to <b>talk</b> with a big <b>smile</b>.`},
+  {img:{em:"💬",lbl:"Unit 2 · Scene 1",prompt:`Studio-Ghibli style: ${CHARS} sitting at a cosy coffee shop table, Lucas talking with his hands while Sofía listens with interest, two cups of coffee steaming. Warm wooden interior, soft window light, friendly mood.`,q:"What is Lucas doing? What question did Sofía ask him?"}},
+  {p:`"On my first day, I was nervous," Lucas said. "But I met a <b>buddy</b> called Mateo. We started to <b>laugh</b> at the same jokes, and we <id>hit it off</id> right away."`},
+  {img:{em:"😂",lbl:"Unit 2 · Scene 2",prompt:`Studio-Ghibli style flashback: a young, slightly nervous Lucas (green jacket) on his first day at an office, next to a cheerful new colleague named Mateo. Both are laughing together at a desk. Bright, hopeful colors, gentle light.`,q:"How did Lucas feel on his first day? Who did he meet?"}},
+  {p:`"That sounds wonderful," said Sofía. "A good friend stays with you <id>through thick and thin</id>." Lucas nodded. "Yes. Mateo helped me when I was sad, and we celebrated together when I was <b>happy</b>."`},
+  {img:{em:"🤝",lbl:"Unit 2 · Scene 3",prompt:`Studio-Ghibli style: two panels feeling — Lucas looking sad while his friend Mateo gently supports him, and then both celebrating happily. Symbol of friendship in good and bad times. Emotional, warm watercolor, soft rain and then sunshine.`,q:"What does it mean that a friend stays with you 'through thick and thin'?"}},
+  {p:`Sofía smiled. "I am happy that you and Mateo <pv>get along</pv> so well." "We do," Lucas said. "Every weekend we <pv>hang out</pv> at the <b>park</b> or watch a football match." Sofía felt <b>relaxed</b> and happy, listening to her old friend. She thought, "True friends are a real treasure."`},
+  {img:{em:"⚽",lbl:"Unit 2 · Scene 4",prompt:`Studio-Ghibli style: Lucas and his friend Mateo relaxing and hanging out in a green park on the weekend, watching football on a phone and laughing, sitting on the grass with snacks. Sunny, calm, friendly atmosphere.`,q:"What do Lucas and Mateo do on weekends? Where do they hang out?"}}
+ ],
+ model:`My best friend is Carla. We met at school and we <span class="id">hit it off</span> immediately. We always <span class="pv">get along</span> very well, and we <span class="pv">hang out</span> every weekend. She stays with me <span class="id">through thick and thin</span>. A true friend is the best gift.`,
+ finalq:{en:"What do you like to do when you meet an old friend?",es:"¿Qué te gusta hacer cuando te encuentras con un viejo amigo?"},
+ mc:[
+  {q:"What did Sofía ask Lucas about?",opts:["His new car","His best friend at work","His holidays","His family"],a:1},
+  {q:"How did Lucas feel on his first day at work?",opts:["Bored","Angry","Nervous","Tired"],a:2},
+  {q:"What is the name of Lucas's friend from work?",opts:["Daniel","Mateo","Pedro","Carlos"],a:1},
+  {q:"Why did Lucas and Mateo become friends quickly?",opts:["They laughed at the same jokes","They lived in the same house","They were brothers","They studied medicine"],a:0},
+  {q:"What do Lucas and Mateo do every weekend?",opts:["Travel abroad","Study English","Hang out at the park or watch football","Work extra hours"],a:2}
+ ],
+ tf:[
+  {q:"Lucas met Mateo at the coffee shop.",a:false},
+  {q:"Lucas and Mateo hit it off right away.",a:true},
+  {q:"A friend through thick and thin only helps you in good times.",a:false},
+  {q:"Lucas and Mateo get along very well.",a:true},
+  {q:"Sofía felt relaxed and happy listening to Lucas.",a:true}
+ ],
+ open:[
+  "Who is your best friend? How did you meet?",
+  "Did you hit it off with your best friend right away, or did it take time?",
+  "What do you like to do when you hang out with friends?",
+  "Why is it important to have friends through thick and thin?",
+  "Do you get along with all your classmates? Explain."
+ ],
+ recall:[
+  {q:"Which idiom means 'to like each other and become friends quickly'?",a:"Hit it off."},
+  {q:"Which idiom means 'in good times and in bad times'?",a:"Through thick and thin."},
+  {q:"Which phrasal verb means 'to have a good relationship with someone'?",a:"Get along."},
+  {q:"Which phrasal verb means 'to spend free time relaxing together'?",a:"Hang out."},
+  {q:"What word in the story means 'a close friend / a pal'?",a:"Buddy."}
+ ]
+});
+
+UNITS.push({
+ n:3, title:"The Good Old Days", theme:"Remembering a special day together",
+ idioms:[{en:"Have a whale of a time",es:"Pasarla en grande"},{en:"The good old days",es:"Los viejos buenos tiempos"}],
+ pvs:[{en:"Look back on",es:"Recordar / mirar atrás"},{en:"Bring back",es:"Traer recuerdos"}],
+ story:[
+  {p:`Lucas and Sofía kept talking. "Do you remember our school <b>trip</b> to the mountains?" Sofía asked. Lucas's <b>smile</b> grew bigger. "Of course! That was the best day of our <b>childhood</b>."`},
+  {img:{em:"⛰️",lbl:"Unit 3 · Scene 1",prompt:`Studio-Ghibli style memory: young teenage Lucas and Sofía on a school trip, standing on a green mountain path with a yellow school bus behind them and other classmates. Bright sky, fresh air, fluffy clouds, nostalgic warm light.`,q:"What are the friends remembering? Where did the school trip go?"}},
+  {p:`"We played games all day and we <id>had a whale of a time</id>," Sofía laughed. "We ran in the fields, we sang on the bus, and we ate sandwiches near a small river."`},
+  {img:{em:"🎶",lbl:"Unit 3 · Scene 2",prompt:`Studio-Ghibli style: a group of happy teenagers, including young Lucas and Sofía, singing and laughing together on a yellow bus and running in a green field with a little river. Joyful, sunny, full of energy, soft watercolor.`,q:"What did the friends do on the trip? Did they enjoy it? How do you know?"}},
+  {p:`"Those were <id>the good old days</id>," Lucas said softly. He felt a little nostalgic. "We were so young and free." Sofía nodded slowly, with happy eyes.`},
+  {img:{em:"💭",lbl:"Unit 3 · Scene 3",prompt:`Studio-Ghibli style: present-day ${CHARS} sitting in the coffee shop, looking thoughtful and a little nostalgic, with a soft dreamy glow around them and faint images of their youth floating above like memories. Tender, emotional mood.`,q:"How do Lucas and Sofía feel when they talk about the past? Why?"}},
+  {p:`"I often <pv>look back on</pv> those years," said Sofía. "They make me <b>happy</b>." Lucas took out an old photo from his wallet. "Look! This photo will <pv>bring back</pv> so many <b>memories</b>." They both laughed at the picture of two little kids with big smiles and dirty shoes.`},
+  {img:{em:"📷",lbl:"Unit 3 · Scene 4",prompt:`Studio-Ghibli style: close-up of ${CHARS} looking at a small old photograph of themselves as muddy, smiling children. Their faces are full of joy and laughter. Warm light, the photo glowing softly, cosy coffee shop background.`,q:"What does Lucas take out of his wallet? What is in the old photo?"}}
+ ],
+ model:`I love to <span class="pv">look back on</span> my school years. My friends and I always <span class="id">had a whale of a time</span> on our trips. Those were <span class="id">the good old days</span>! Old photos <span class="pv">bring back</span> so many happy memories of my childhood.`,
+ finalq:{en:"What made that day special for you?",es:"¿Qué hizo especial ese día para ti?"},
+ mc:[
+  {q:"What special memory do they talk about?",opts:["A school trip to the mountains","A birthday party","A wedding","A football final"],a:0},
+  {q:"What did they do on the trip?",opts:["They studied all day","They played, sang and ran in the fields","They stayed at home","They went shopping"],a:1},
+  {q:"How did Lucas feel remembering the past?",opts:["Angry","A little nostalgic","Bored","Afraid"],a:1},
+  {q:"What did Lucas take out of his wallet?",opts:["Some money","An old photo","A ticket","A letter"],a:1},
+  {q:"Who is in the old photo?",opts:["Their teachers","Two little kids with big smiles","Their parents","A football team"],a:1}
+ ],
+ tf:[
+  {q:"They remember a school trip to the beach.",a:false},
+  {q:"They had a whale of a time on the trip.",a:true},
+  {q:"Lucas felt bored when he remembered the past.",a:false},
+  {q:"The old photo brought back many memories.",a:true},
+  {q:"In the photo, the children had clean, perfect shoes.",a:false}
+ ],
+ open:[
+  "What is the best school trip you remember? Describe it.",
+  "Do you like to look back on your childhood? Why or why not?",
+  "What object brings back happy memories for you?",
+  "Describe a day when you had a whale of a time with friends.",
+  "Why do people say 'the good old days'?"
+ ],
+ recall:[
+  {q:"Which idiom means 'to enjoy yourself very much'?",a:"Have a whale of a time."},
+  {q:"Which idiom means 'the nice times in the past'?",a:"The good old days."},
+  {q:"Which phrasal verb means 'to think about the past / remember'?",a:"Look back on."},
+  {q:"Which phrasal verb means 'to make you remember something'?",a:"Bring back."},
+  {q:"What word in the story means 'things you remember from the past'?",a:"Memories."}
+ ]
+});
+
+UNITS.push({
+ n:4, title:"The More the Merrier", theme:"Planning a camping adventure with friends",
+ idioms:[{en:"Get away from it all",es:"Desconectarse de todo / escaparse"},{en:"The more the merrier",es:"Cuantos más, mejor"}],
+ pvs:[{en:"Set off",es:"Partir / salir de viaje"},{en:"Pack up",es:"Empacar / recoger"}],
+ story:[
+  {p:`"I have a great idea," said Sofía suddenly. "Let's plan a camping <b>trip</b> next weekend!" Lucas was very <b>excited</b>. "Yes! I really need to <id>get away from it all</id>. Work has been so busy."`},
+  {img:{em:"🏕️",lbl:"Unit 4 · Scene 1",prompt:`Studio-Ghibli style: ${CHARS} at the coffee shop table, now full of energy, drawing a camping plan on a napkin with a pen. A small dreamy thought-bubble shows a green tent and mountains. Bright, hopeful, warm colors.`,q:"What idea does Sofía have? Why does Lucas want to go?"}},
+  {p:`"Should we invite Mateo and other friends too?" Lucas asked. "Of course!" Sofía laughed. "<id>The more the merrier</id>! A big group is always more fun." They started to make a happy list of friends to invite.`},
+  {img:{em:"📝",lbl:"Unit 4 · Scene 2",prompt:`Studio-Ghibli style: Lucas and Sofía writing a list of friends' names on paper, smiling, with small floating portraits of different happy friends around them. Cosy table, warm light, friendly and inviting atmosphere.`,q:"Who do they want to invite? What does 'the more the merrier' mean?"}},
+  {p:`"What do we need to bring?" asked Lucas. "We must <pv>pack up</pv> a tent, warm clothes, food and a guitar," said Sofía, counting on her fingers. "And don't forget marshmallows for the fire!"`},
+  {img:{em:"🎒",lbl:"Unit 4 · Scene 3",prompt:`Studio-Ghibli style: ${CHARS} happily packing camping things into big backpacks at home — a green tent, warm jackets, food, a guitar and marshmallows on the floor. Organised, cosy room, soft warm evening light.`,q:"What things do they need to pack for the camping trip?"}},
+  {p:`"Perfect," said Lucas. "Let's <pv>set off</pv> early on Saturday morning, before the sun is too hot." Sofía agreed with a big <b>smile</b>. They felt <b>relaxed</b> and happy. After ten years apart, the two old friends were planning a new adventure together.`},
+  {img:{em:"🌄",lbl:"Unit 4 · Scene 4",prompt:`Studio-Ghibli style: early morning, ${CHARS} with big backpacks walking on a road towards green mountains as the sun rises. A small group of friends follows behind. Fresh, hopeful, golden sunrise light, wide open landscape.`,q:"When do they want to set off? How do they feel about the adventure?"}}
+ ],
+ model:`Next weekend my friends and I will go camping to <span class="id">get away from it all</span>. We will <span class="pv">pack up</span> a tent, food and warm clothes. We want to invite many people, because <span class="id">the more the merrier</span>! We will <span class="pv">set off</span> early on Saturday morning.`,
+ finalq:{en:"What is your favorite outdoor activity?",es:"¿Cuál es tu actividad al aire libre favorita?"},
+ mc:[
+  {q:"What idea does Sofía have?",opts:["A camping trip","A birthday party","A shopping day","A study group"],a:0},
+  {q:"Why does Lucas want to go?",opts:["He needs money","He wants to get away from busy work","He is hungry","He lost his job"],a:1},
+  {q:"What does 'the more the merrier' mean here?",opts:["Fewer people is better","A big group is more fun","They must travel far","They need more money"],a:1},
+  {q:"What do they need to pack?",opts:["Only books","A tent, clothes, food and a guitar","School uniforms","Office computers"],a:1},
+  {q:"When do they want to set off?",opts:["Saturday night","Early Saturday morning","Sunday afternoon","Friday at midnight"],a:1}
+ ],
+ tf:[
+  {q:"Lucas wants to get away from it all because work has been busy.",a:true},
+  {q:"They decide to invite only one person.",a:false},
+  {q:"They need to pack a tent, food and warm clothes.",a:true},
+  {q:"They will set off late at night.",a:false},
+  {q:"The two friends feel relaxed and happy about the plan.",a:true}
+ ],
+ open:[
+  "Do you like camping? Why or why not?",
+  "Where do you go when you want to get away from it all?",
+  "What three things would you pack for a camping trip?",
+  "Do you prefer to travel in a big group or with one friend? Explain.",
+  "Describe a trip you would like to set off on with your friends."
+ ],
+ recall:[
+  {q:"Which idiom means 'to escape from stress and relax'?",a:"Get away from it all."},
+  {q:"Which idiom means 'it is better with more people'?",a:"The more the merrier."},
+  {q:"Which phrasal verb means 'to put things in a bag for a trip'?",a:"Pack up."},
+  {q:"Which phrasal verb means 'to begin a journey'?",a:"Set off."},
+  {q:"What word in the story means 'a journey to a place'?",a:"Trip."}
+ ]
+});
+
+UNITS.push({
+ n:5, title:"Out of the Blue", theme:"Meeting again in the park after a long time",
+ idioms:[{en:"Pick up where we left off",es:"Retomar donde lo dejamos"},{en:"Out of the blue",es:"De repente / inesperadamente"}],
+ pvs:[{en:"Catch up on",es:"Ponerse al día con (noticias)"},{en:"Fill in",es:"Poner al día / informar"}],
+ story:[
+  {p:`A few days later, Sofía was reading a book on a bench in the <b>park</b>. The morning was calm and she felt <b>relaxed</b>. Then, <id>out of the blue</id>, she heard a familiar voice say her name.`},
+  {img:{em:"🌳",lbl:"Unit 5 · Scene 1",prompt:`Studio-Ghibli style: Sofía (curly brown hair, yellow scarf) sitting calmly on a wooden bench in a beautiful green park, reading a book, with falling leaves and soft sunlight through the trees. Peaceful, serene, gentle colors.`,q:"Where is Sofía? What is she doing? How does she feel?"}},
+  {p:`She looked up and saw another old <b>classmate</b>, Andrés, smiling at her. "Sofía! What a surprise to <b>meet</b> you here!" he said. Sofía was happy and very <b>surprised</b>. "Andrés! I haven't seen you in years!"`},
+  {img:{em:"😲",lbl:"Unit 5 · Scene 2",prompt:`Studio-Ghibli style: Sofía looking up from her book, surprised and smiling, as a friendly young man named Andrés (brown hair, blue sweater) waves at her in the park. Warm reunion moment, soft golden light, leaves in the air.`,q:"Who does Sofía meet in the park? How does she react?"}},
+  {p:`Andrés sat next to her. "We have so much to tell each other," he said. "Let's just <id>pick up where we left off</id>, like in the old days." Sofía laughed and agreed happily.`},
+  {img:{em:"🪑",lbl:"Unit 5 · Scene 3",prompt:`Studio-Ghibli style: Sofía and Andrés sitting close together on the park bench, talking warmly and laughing, as if no time had passed. Comfortable, friendly body language, dappled sunlight, cosy autumn park.`,q:"What do they decide to do? What does 'pick up where we left off' mean?"}},
+  {p:`"Tell me everything! I want to <pv>catch up on</pv> all your news," said Sofía. Andrés began to <pv>fill in</pv> the details of his life: a new job, a small dog, and a recent <b>trip</b> to the sea. They <b>talked</b> for hours, and the park was full of their <b>laughter</b>.`},
+  {img:{em:"💬",lbl:"Unit 5 · Scene 4",prompt:`Studio-Ghibli style: Sofía and Andrés deep in happy conversation on the bench, with small floating images above them showing a new office, a little dog and a sunny beach. The park glows in warm afternoon light, leaves dancing.`,q:"What news does Andrés share? How long do they talk?"}}
+ ],
+ model:`Yesterday, <span class="id">out of the blue</span>, I met my old friend in the park. We decided to <span class="id">pick up where we left off</span>. I wanted to <span class="pv">catch up on</span> her news, so she began to <span class="pv">fill in</span> all the details about her new job and her family. It was a lovely surprise!`,
+ finalq:{en:"Have you met an old friend recently?",es:"¿Te has encontrado con un viejo amigo recientemente?"},
+ mc:[
+  {q:"Where was Sofía at the start?",opts:["At home","On a bench in the park","At the office","At the mall"],a:1},
+  {q:"What was Sofía doing?",opts:["Reading a book","Running","Cooking","Sleeping"],a:0},
+  {q:"Who did she meet?",opts:["Her sister","Lucas","Andrés, an old classmate","A teacher"],a:2},
+  {q:"What news did Andrés share?",opts:["A new job, a dog and a trip","A new house only","Nothing new","A new car"],a:0},
+  {q:"How long did they talk?",opts:["A few seconds","For hours","One minute","All night"],a:1}
+ ],
+ tf:[
+  {q:"Sofía was reading a book in the park.",a:true},
+  {q:"Andrés appeared out of the blue.",a:false},
+  {q:"They decided to pick up where they left off.",a:true},
+  {q:"Andrés has a new job and a small dog.",a:true},
+  {q:"The park was silent and empty of laughter.",a:false}
+ ],
+ open:[
+  "Where do you like to relax and read or think?",
+  "Has a friend ever appeared 'out of the blue'? Tell the story.",
+  "What news would you like to catch up on with an old friend?",
+  "When you meet an old friend, what do you fill them in on first?",
+  "Why is it easy to 'pick up where we left off' with a real friend?"
+ ],
+ recall:[
+  {q:"Which idiom means 'to continue a friendship as before, after a long time'?",a:"Pick up where we left off."},
+  {q:"Which idiom means 'suddenly and unexpectedly'?",a:"Out of the blue."},
+  {q:"Which phrasal verb means 'to learn the recent news about someone'?",a:"Catch up on."},
+  {q:"Which phrasal verb means 'to give someone the missing information'?",a:"Fill in."},
+  {q:"What word in the story means 'to come together / to see someone'?",a:"Meet."}
+ ]
+});
+
+UNITS.push({
+ n:6, title:"A Trip Down Memory Lane", theme:"Looking at old photos with a friend",
+ idioms:[{en:"A trip down memory lane",es:"Un viaje por los recuerdos"},{en:"Time flies",es:"El tiempo vuela"}],
+ pvs:[{en:"Look through",es:"Revisar / hojear (fotos)"},{en:"Take back",es:"Transportar al pasado"}],
+ story:[
+  {p:`That evening, Sofía invited Lucas to her <b>home</b>. "I found an old photo album," she said with a <b>smile</b>. "Come and see it!" Lucas was <b>excited</b> and sat on the sofa next to her.`},
+  {img:{em:"🏠",lbl:"Unit 6 · Scene 1",prompt:`Studio-Ghibli style: ${CHARS} sitting close together on a cosy sofa in a warm living room, a big old photo album open on their laps, a lamp glowing softly. Plants, books and a window with evening light. Tender, homely atmosphere.`,q:"Where are the friends now? What did Sofía find?"}},
+  {p:`They opened the album. "Wow, looking at these pictures is <id>a trip down memory lane</id>," Lucas said. There were photos of their <b>school</b>, their old teachers, and their <b>childhood</b> birthday parties.`},
+  {img:{em:"📖",lbl:"Unit 6 · Scene 2",prompt:`Studio-Ghibli style: close-up of an open photo album full of warm, faded photographs — a school building, smiling teachers, a children's birthday party with balloons. Hands of two adults turning the pages. Nostalgic, golden, emotional.`,q:"What photos do they see in the album? How do these pictures make them feel?"}},
+  {p:`"Look at us here! We were only seven years old," laughed Sofía. "<id>Time flies</id>! Now we are adults." Lucas nodded, a little surprised at how fast the years had passed.`},
+  {img:{em:"⏳",lbl:"Unit 6 · Scene 3",prompt:`Studio-Ghibli style: a split, dreamy image — on one side young child versions of Lucas and Sofía at age seven, on the other their adult selves looking at the photo, connected by floating clock hands and falling leaves. Magical, reflective mood.`,q:"How old were they in the photo? What does 'time flies' mean?"}},
+  {p:`They continued to <pv>look through</pv> the old pictures one by one. Each photo brought a new <b>memory</b>. "This one really <pv>takes me back</pv>," said Lucas, pointing at a photo of a snowy day. "I remember that cold winter so well!" They <b>laughed</b> together until late at night.`},
+  {img:{em:"❄️",lbl:"Unit 6 · Scene 4",prompt:`Studio-Ghibli style: a glowing memory of young Lucas and Sofía playing in deep white snow, building a snowman and throwing snowballs, breath visible in the cold air. Soft winter light, joyful, nostalgic watercolor.`,q:"Which photo takes Lucas back? What is the memory about?"}}
+ ],
+ model:`Last night I decided to <span class="pv">look through</span> my old photos. It was <span class="id">a trip down memory lane</span>! One picture of my childhood really <span class="pv">took me back</span> to happy summers. We were so young — <span class="id">time flies</span>! I felt happy and a little nostalgic.`,
+ finalq:{en:"What is your favorite memory from a photo?",es:"¿Cuál es tu recuerdo favorito de una foto?"},
+ mc:[
+  {q:"Where did Sofía invite Lucas?",opts:["To the cinema","To her home","To the mall","To the beach"],a:1},
+  {q:"What did they look at together?",opts:["A new film","An old photo album","A football match","A school book"],a:1},
+  {q:"How old were they in one of the photos?",opts:["Seven years old","Fifteen years old","Twenty years old","Three years old"],a:0},
+  {q:"What photo takes Lucas back?",opts:["A beach day","A snowy winter day","A football final","A wedding"],a:1},
+  {q:"How did they feel looking at the album?",opts:["Bored","Nostalgic and happy","Angry","Afraid"],a:1}
+ ],
+ tf:[
+  {q:"They looked at an old photo album at Sofía's home.",a:true},
+  {q:"There were no photos of their school.",a:false},
+  {q:"In one photo they were seven years old.",a:true},
+  {q:"Lucas remembered a hot summer day from the snowy photo.",a:false},
+  {q:"They laughed together until late at night.",a:true}
+ ],
+ open:[
+  "Do you have an old photo album at home? What is in it?",
+  "Which photo takes you back to a happy time?",
+  "Do you agree that 'time flies'? Give an example from your life.",
+  "Describe a childhood memory that an old photo brings back.",
+  "Why do people enjoy a 'trip down memory lane'?"
+ ],
+ recall:[
+  {q:"Which idiom means 'remembering happy times from the past'?",a:"A trip down memory lane."},
+  {q:"Which idiom means 'time passes very quickly'?",a:"Time flies."},
+  {q:"Which phrasal verb means 'to examine photos or pages one by one'?",a:"Look through."},
+  {q:"Which phrasal verb means 'to make you remember the past strongly'?",a:"Take back."},
+  {q:"What word in the story means 'the place where you live'?",a:"Home."}
+ ]
+});
+
+UNITS.push({
+ n:7, title:"My Treat", theme:"Inviting a friend out for coffee",
+ idioms:[{en:"Grab a bite",es:"Comer algo / picar algo"},{en:"My treat",es:"Yo invito"}],
+ pvs:[{en:"Drop by",es:"Pasar a visitar"},{en:"Set up",es:"Organizar / concertar"}],
+ story:[
+  {p:`On Friday, Lucas called Sofía. "Are you free this afternoon? Let's go out!" Sofía was happy to hear his voice. "Yes! What do you want to do?" she asked.`},
+  {img:{em:"📞",lbl:"Unit 7 · Scene 1",prompt:`Studio-Ghibli style: Lucas (green jacket) smiling while talking on the phone at home, with a small thought-bubble of a coffee cup. Warm, cosy room, soft afternoon light through a window. Cheerful, friendly mood.`,q:"What is Lucas doing? What does he want to do this afternoon?"}},
+  {p:`"Why don't we <pv>drop by</pv> that new <b>coffee shop</b> on Main Street?" said Lucas. "We can <id>grab a bite</id> and a nice hot drink." Sofía loved the idea. "Perfect! I am a little hungry too."`},
+  {img:{em:"☕",lbl:"Unit 7 · Scene 2",prompt:`Studio-Ghibli style: a charming new coffee shop on a street corner, warm yellow lights, small tables, cakes in the window, with ${CHARS} walking happily towards the door. Inviting, cosy, golden-hour atmosphere.`,q:"Where do they decide to go? What are they going to do there?"}},
+  {p:`At the coffee shop, they ordered sandwiches and two big cups of coffee. When the bill came, Lucas smiled and said, "Don't worry — <id>my treat</id> today!" Sofía thanked him warmly.`},
+  {img:{em:"🥪",lbl:"Unit 7 · Scene 3",prompt:`Studio-Ghibli style: ${CHARS} at a cosy coffee shop table with sandwiches and two big cups of coffee. Lucas is gently taking the bill, smiling kindly; Sofía looks grateful. Warm interior, soft light, friendly generous moment.`,q:"What do they order? Who pays for the food? What does 'my treat' mean?"}},
+  {p:`While they ate, they decided to <pv>set up</pv> a small <b>reunion</b> with all their old <b>classmates</b>. "Let's invite everyone next month!" Sofía said, full of energy. They wrote the date on a napkin and felt very <b>excited</b> about the plan.`},
+  {img:{em:"🗓️",lbl:"Unit 7 · Scene 4",prompt:`Studio-Ghibli style: ${CHARS} excitedly writing a date and names on a napkin to organise a class reunion, with floating happy faces of old classmates around them. Coffee cups on the table, warm bright atmosphere, hopeful mood.`,q:"What are they planning? How do they feel about it?"}}
+ ],
+ model:`Let's <span class="pv">drop by</span> the new coffee shop this afternoon. We can <span class="id">grab a bite</span> and a hot drink. Don't worry about the money — <span class="id">my treat</span>! After that, we can <span class="pv">set up</span> a small reunion with our old friends. I am so excited!`,
+ finalq:{en:"Where do you like to go with your friends?",es:"¿A dónde te gusta ir con tus amigos?"},
+ mc:[
+  {q:"What did Lucas do on Friday?",opts:["He called Sofía","He travelled","He stayed in bed","He went to work"],a:0},
+  {q:"Where did they decide to go?",opts:["A new coffee shop","The cinema","The beach","The gym"],a:0},
+  {q:"What did they order?",opts:["Pizza and juice","Sandwiches and coffee","Only water","Ice cream"],a:1},
+  {q:"Who paid the bill?",opts:["Sofía","They shared it","Lucas (his treat)","A waiter"],a:2},
+  {q:"What did they plan to set up?",opts:["A holiday abroad","A reunion with old classmates","A new business","A football team"],a:1}
+ ],
+ tf:[
+  {q:"Lucas invited Sofía to go out on Friday.",a:true},
+  {q:"They decided to drop by an old coffee shop they always visit.",a:false},
+  {q:"Lucas said the food was 'my treat'.",a:true},
+  {q:"They planned to set up a reunion with old classmates.",a:true},
+  {q:"They wrote the date in a big notebook.",a:false}
+ ],
+ open:[
+  "What is your favorite place to grab a bite with friends?",
+  "Do you like to pay for your friends sometimes ('my treat')? Why?",
+  "Whose house do you like to drop by, and why?",
+  "Would you like to set up a reunion with your old classmates? Who would you invite?",
+  "Describe the perfect afternoon out with a friend."
+ ],
+ recall:[
+  {q:"Which idiom means 'to eat something small'?",a:"Grab a bite."},
+  {q:"Which idiom means 'I will pay for you'?",a:"My treat."},
+  {q:"Which phrasal verb means 'to visit a place for a short time'?",a:"Drop by."},
+  {q:"Which phrasal verb means 'to organise or arrange an event'?",a:"Set up."},
+  {q:"What word in the story means 'a meeting of people who were together before'?",a:"Reunion."}
+ ]
+});
+
+UNITS.push({
+ n:8, title:"Like Two Peas in a Pod", theme:"Presenting your best childhood friend",
+ idioms:[{en:"Joined at the hip",es:"Inseparables"},{en:"Like two peas in a pod",es:"Como uña y carne / muy parecidos"}],
+ pvs:[{en:"Grow up",es:"Crecer"},{en:"Lose touch",es:"Perder el contacto"}],
+ story:[
+  {p:`At the class <b>reunion</b>, each person talked about their childhood. When it was Lucas's turn, he stood up and pointed at Sofía with a big <b>smile</b>. "This is my oldest friend," he said proudly.`},
+  {img:{em:"🎤",lbl:"Unit 8 · Scene 1",prompt:`Studio-Ghibli style: a warm reunion room full of friendly adults, Lucas (green jacket) standing and proudly pointing at Sofía (yellow scarf), who smiles shyly. Balloons and soft fairy lights, cosy warm atmosphere, happy crowd.`,q:"Where are they now? Who is Lucas talking about?"}},
+  {p:`"When we were kids, we were always together," Lucas continued. "We were <id>joined at the hip</id>! We went to <b>school</b> together and we <b>played</b> together every single day."`},
+  {img:{em:"🧸",lbl:"Unit 8 · Scene 2",prompt:`Studio-Ghibli style memory: little Lucas and little Sofía as small children, always side by side — walking to school holding hands, sharing toys, doing everything together. Sweet, innocent, warm pastel colors, nostalgic glow.`,q:"What did Lucas and Sofía do together as children? What does 'joined at the hip' mean?"}},
+  {p:`"People said we were <id>like two peas in a pod</id> because we liked the same games, the same food and the same songs," he laughed. Everyone in the room smiled at the lovely story.`},
+  {img:{em:"👫",lbl:"Unit 8 · Scene 3",prompt:`Studio-Ghibli style: young Lucas and Sofía sitting together, both eating the same snack and singing the same song with matching happy faces, looking very similar in personality. Cheerful, charming, warm light, playful mood.`,q:"Why were they 'like two peas in a pod'? What things did they share?"}},
+  {p:`"But when we <pv>grew up</pv>, life took us to different cities," Lucas said. "Sadly, we started to <pv>lose touch</pv> for many years. But now we are friends again, and I am so happy." Sofía wiped a happy tear from her eye, and everyone <b>laughed</b> and clapped.`},
+  {img:{em:"🌧️",lbl:"Unit 8 · Scene 4",prompt:`Studio-Ghibli style: a gentle, emotional image of adult Lucas and Sofía in different cities, far apart, with a soft road and rain between them — and then a bright bridge reconnecting them. Bittersweet but hopeful, tender watercolor.`,q:"Why did they lose touch? How does the story end?"}}
+ ],
+ model:`My best childhood friend was Pablo. We <span class="pv">grew up</span> in the same street and we were <span class="id">joined at the hip</span>. People said we were <span class="id">like two peas in a pod</span>. Sadly, we <span class="pv">lost touch</span> for years, but now we are friends again. I am very happy!`,
+ finalq:{en:"What is your favorite memory with your childhood friend?",es:"¿Cuál es tu recuerdo favorito con tu amigo de la infancia?"},
+ mc:[
+  {q:"Where does this story happen?",opts:["At a class reunion","At a coffee shop","In the park","At a camp"],a:0},
+  {q:"Who does Lucas talk about?",opts:["His brother","Sofía, his oldest friend","His teacher","Mateo"],a:1},
+  {q:"What does 'joined at the hip' mean?",opts:["They lived far apart","They were always together","They argued a lot","They were enemies"],a:1},
+  {q:"Why were they 'like two peas in a pod'?",opts:["They looked rich","They liked the same things","They were tall","They were quiet"],a:1},
+  {q:"Why did they lose touch?",opts:["They had a big fight","Life took them to different cities","They forgot each other","They moved to the same town"],a:1}
+ ],
+ tf:[
+  {q:"Lucas presented Sofía as his oldest friend.",a:true},
+  {q:"As children, they only met once a year.",a:false},
+  {q:"They liked the same games, food and songs.",a:true},
+  {q:"They lost touch because they moved to different cities.",a:true},
+  {q:"At the end, everyone was angry and left the room.",a:false}
+ ],
+ open:[
+  "Who was your best friend when you were a child?",
+  "Were you and your best friend 'like two peas in a pod'? In what way?",
+  "Have you ever lost touch with a good friend? What happened?",
+  "How has your life changed since you grew up?",
+  "What is your happiest childhood memory with a friend?"
+ ],
+ recall:[
+  {q:"Which idiom means 'two people who are always together'?",a:"Joined at the hip."},
+  {q:"Which idiom means 'two people who are very similar'?",a:"Like two peas in a pod."},
+  {q:"Which phrasal verb means 'to become an adult'?",a:"Grow up."},
+  {q:"Which phrasal verb means 'to stop contacting someone'?",a:"Lose touch."},
+  {q:"What word in the story means 'the time when you are a child'?",a:"Childhood."}
+ ]
+});
+
+UNITS.push({
+ n:9, title:"You Haven't Changed a Bit", theme:"The emotional moment of meeting again",
+ idioms:[{en:"You haven't changed a bit",es:"No has cambiado nada"},{en:"Where does the time go?",es:"¿Cómo pasa el tiempo?"}],
+ pvs:[{en:"Keep in touch",es:"Mantenerse en contacto"},{en:"Bump into",es:"Toparse / encontrarse por casualidad"}],
+ story:[
+  {p:`One rainy afternoon, Sofía went to the <b>mall</b> to buy a <b>gift</b>. While she was walking, she suddenly <pv>bumped into</pv> a man near the door. "I'm so sorry!" she said. Then she looked at his face and gasped.`},
+  {img:{em:"🛍️",lbl:"Unit 9 · Scene 1",prompt:`Studio-Ghibli style: inside a busy shopping mall on a rainy day, Sofía (yellow scarf) accidentally bumps into a surprised man near the entrance, shopping bags almost falling. Warm indoor lights, rain on the big windows, dynamic moment.`,q:"Where is Sofía? What happens at the door of the mall?"}},
+  {p:`It was Tomás, a friend from her old <b>school</b>! "Tomás! Is it really you?" she said, very <b>surprised</b>. He laughed loudly. "Sofía! Wow, <id>you haven't changed a bit</id>! You look exactly the same!"`},
+  {img:{em:"😲",lbl:"Unit 9 · Scene 2",prompt:`Studio-Ghibli style: Sofía and an old school friend named Tomás (curly hair, red coat) looking at each other with huge surprised smiles inside the mall, hands raised in shock and joy. Warm, emotional reunion, soft glowing light.`,q:"Who does Sofía meet? What does Tomás say about her?"}},
+  {p:`They stood and talked for a long time. "It's been fifteen years since school," said Sofía. "<id>Where does the time go?</id>" Tomás shook his head. "I know! We were just teenagers, and now look at us!"`},
+  {img:{em:"⌛",lbl:"Unit 9 · Scene 3",prompt:`Studio-Ghibli style: Sofía and Tomás chatting happily near a mall café, with a soft dreamy overlay of their teenage selves in school uniforms behind them. A big clock on the wall. Reflective, warm, nostalgic atmosphere.`,q:"How long has it been since school? What does 'where does the time go?' express?"}},
+  {p:`Before they said goodbye, Tomás smiled. "This time, let's <pv>keep in touch</pv>! Give me your phone number." Sofía agreed happily. "Yes! Let's not lose each other again." They saved their numbers and promised to <b>meet</b> for a coffee very soon.`},
+  {img:{em:"📱",lbl:"Unit 9 · Scene 4",prompt:`Studio-Ghibli style: Sofía and Tomás smiling and saving each other's phone numbers on their phones inside the mall, promising to stay in touch. Warm friendly farewell, soft light, shopping bags in hand, hopeful mood.`,q:"What do they decide to do this time? Why is it important to keep in touch?"}}
+ ],
+ model:`Yesterday I <span class="pv">bumped into</span> an old school friend at the mall. "<span class="id">You haven't changed a bit</span>!" I said. We talked for a long time. Fifteen years — <span class="id">where does the time go?</span> This time we will <span class="pv">keep in touch</span> and meet for a coffee soon.`,
+ finalq:{en:"When was the last time you saw an old friend?",es:"¿Cuándo fue la última vez que viste a un viejo amigo?"},
+ mc:[
+  {q:"Where did Sofía go on the rainy afternoon?",opts:["To the mall","To the park","To the school","To the beach"],a:0},
+  {q:"What did she do near the door?",opts:["She fell down","She bumped into a man","She lost her bag","She called a friend"],a:1},
+  {q:"Who was the man?",opts:["Her brother","Lucas","Tomás, an old school friend","A shop worker"],a:2},
+  {q:"How many years had passed since school?",opts:["Five years","Fifteen years","Two years","Twenty years"],a:1},
+  {q:"What did they decide to do this time?",opts:["Keep in touch","Never meet again","Move abroad","Forget each other"],a:0}
+ ],
+ tf:[
+  {q:"Sofía bumped into Tomás at the mall.",a:true},
+  {q:"Tomás said Sofía had changed a lot.",a:false},
+  {q:"It had been fifteen years since school.",a:true},
+  {q:"They decided to keep in touch this time.",a:true},
+  {q:"They refused to share their phone numbers.",a:false}
+ ],
+ open:[
+  "Have you ever bumped into someone you knew in a shop or mall?",
+  "What do you say when you meet an old friend after many years?",
+  "Do you think people change a lot or stay the same? Explain.",
+  "How do you keep in touch with friends who live far away?",
+  "Do you agree that 'time flies' as you grow up? Why?"
+ ],
+ recall:[
+  {q:"Which idiom means 'you look exactly the same as before'?",a:"You haven't changed a bit."},
+  {q:"Which idiom expresses surprise that time has passed so fast?",a:"Where does the time go?"},
+  {q:"Which phrasal verb means 'to stay in contact with someone'?",a:"Keep in touch."},
+  {q:"Which phrasal verb means 'to meet someone by accident'?",a:"Bump into."},
+  {q:"What word in the story means 'a big building with many shops'?",a:"Mall."}
+ ]
+});
+
+UNITS.push({
+ n:10, title:"Worth Their Weight in Gold", theme:"What true friendship really means",
+ idioms:[{en:"A friend in need is a friend indeed",es:"En la necesidad se conoce al amigo"},{en:"Worth their weight in gold",es:"Que vale su peso en oro"}],
+ pvs:[{en:"Count on",es:"Contar con (alguien)"},{en:"Open up",es:"Abrirse / sincerarse"}],
+ story:[
+  {p:`A month later, Sofía had a difficult week. She felt sad and tired, and she did not know what to do. She decided to call Lucas, her oldest friend.`},
+  {img:{em:"😔",lbl:"Unit 10 · Scene 1",prompt:`Studio-Ghibli style: Sofía (yellow scarf) sitting alone by a window at home on a grey evening, looking sad and tired, holding her phone, a single soft lamp glowing. Quiet, emotional, gentle blue-grey colors.`,q:"How does Sofía feel? What does she decide to do?"}},
+  {p:`Lucas answered at once. When he heard her sad voice, he said, "I am coming to your <b>home</b> right now." He knew that <id>a friend in need is a friend indeed</id>, and a true friend always helps.`},
+  {img:{em:"🚗",lbl:"Unit 10 · Scene 2",prompt:`Studio-Ghibli style: Lucas (green jacket) driving through the rainy evening streets to help his friend, a worried but kind look on his face, city lights reflecting on wet roads. Caring, warm-hearted, cinematic mood.`,q:"What does Lucas do when he hears Sofía is sad? Why?"}},
+  {p:`Soon, Lucas arrived with two cups of hot tea. They sat together, and slowly Sofía began to <pv>open up</pv> about her problems. Lucas listened carefully and gave her a warm <b>hug</b>.`},
+  {img:{em:"🍵",lbl:"Unit 10 · Scene 3",prompt:`Studio-Ghibli style: ${CHARS} sitting together on a sofa with two cups of hot tea, Sofía talking honestly about her feelings while Lucas listens with kind, caring eyes. Soft warm lamp light, cosy and safe atmosphere.`,q:"What does Sofía start to do? How does Lucas help her?"}},
+  {p:`"Thank you, Lucas," Sofía said softly. "I know I can always <pv>count on</pv> you." Lucas smiled. "Always. A good friend like you is <id>worth their weight in gold</id>." That night, Sofía felt <b>happy</b> and <b>relaxed</b> again. She understood that true friendship is the greatest <b>gift</b> of all.`},
+  {img:{em:"💛",lbl:"Unit 10 · Scene 4",prompt:`Studio-Ghibli style: ${CHARS} smiling warmly together, the rain outside stopping and a soft golden light filling the room, a feeling of comfort and gratitude. A glowing heart-like warmth around them. Hopeful, heartfelt ending.`,q:"How does Sofía feel at the end? What does she understand about friendship?"}}
+ ],
+ model:`A true friend is someone you can always <span class="pv">count on</span>. When I have a problem, I can <span class="pv">open up</span> to my best friend. <span class="id">A friend in need is a friend indeed</span>. Good friends are <span class="id">worth their weight in gold</span> — they are the greatest gift of all.`,
+ finalq:{en:"What does a true friendship mean to you?",es:"¿Qué significa para ti una verdadera amistad?"},
+ mc:[
+  {q:"Why did Sofía call Lucas?",opts:["She felt sad and tired","She wanted to travel","She lost her phone","She found money"],a:0},
+  {q:"What did Lucas do when he heard her voice?",opts:["He went to her home right away","He hung up","He laughed","He waited a week"],a:0},
+  {q:"What did Lucas bring?",opts:["Two cups of hot tea","A pizza","A book","A gift box"],a:0},
+  {q:"What did Sofía do on the sofa?",opts:["She opened up about her problems","She slept","She watched TV","She left"],a:0},
+  {q:"What does Sofía understand at the end?",opts:["Friendship is the greatest gift","Money is most important","She should move away","She needs no friends"],a:0}
+ ],
+ tf:[
+  {q:"Sofía had a difficult week and felt sad.",a:true},
+  {q:"Lucas ignored her sad voice.",a:false},
+  {q:"Lucas arrived with two cups of hot tea.",a:true},
+  {q:"Sofía said she can always count on Lucas.",a:true},
+  {q:"At the end, Sofía felt worse than before.",a:false}
+ ],
+ open:[
+  "Who can you always count on when you have a problem?",
+  "Is it easy or hard for you to open up about your feelings? Why?",
+  "Do you agree that 'a friend in need is a friend indeed'? Give an example.",
+  "What makes a friend 'worth their weight in gold'?",
+  "Describe a time when a friend helped you in a difficult moment."
+ ],
+ recall:[
+  {q:"Which idiom means 'a real friend helps you in difficult times'?",a:"A friend in need is a friend indeed."},
+  {q:"Which idiom means 'extremely valuable / very precious'?",a:"Worth their weight in gold."},
+  {q:"Which phrasal verb means 'to depend on / trust someone'?",a:"Count on."},
+  {q:"Which phrasal verb means 'to share your feelings honestly'?",a:"Open up."},
+  {q:"What word in the story means 'something special you give to someone'?",a:"Gift."}
+ ]
+});
+
+/* === END_UNITS_MARKER === */
+
+const READINGS=[];
+READINGS.push({
+ n:1, title:"The Old Coffee Shop",
+ text:`There is a small coffee shop on the corner of my street. It is called "The Blue Cup". My grandmother went there when she was young, and now I go there too. The walls are full of old black-and-white photos of the town. The coffee smells wonderful, and the chairs are soft and comfortable. Every Saturday morning, I meet my friend Ana there. We sit by the window, drink hot chocolate, and talk for hours. Sometimes we study together, and sometimes we just laugh. The owner, Mr. Díaz, knows our names and always brings us free cookies. For me, this coffee shop is not only a place to drink coffee. It is a place full of memories and friendship. I hope it never closes, because it feels like a second home to me.`,
+ mc:[
+  {q:"What is the name of the coffee shop?",opts:["The Blue Cup","The Red Door","The Green Café","The Old Corner"],a:0},
+  {q:"Who went there when she was young?",opts:["Ana","The writer's grandmother","Mr. Díaz","The writer's sister"],a:1},
+  {q:"What is on the walls?",opts:["Modern paintings","Old black-and-white photos","Mirrors","Maps"],a:1},
+  {q:"When does the writer meet Ana?",opts:["Every Saturday morning","Every night","On Mondays","Once a year"],a:0},
+  {q:"What does Mr. Díaz bring them?",opts:["Free cookies","Newspapers","Flowers","Books"],a:0}
+ ],
+ tf:[
+  {q:"The coffee shop is on the corner of the writer's street.",a:true},
+  {q:"The writer goes there only once a year.",a:false},
+  {q:"The owner knows their names.",a:true},
+  {q:"The writer thinks the place is cold and unfriendly.",a:false},
+  {q:"The coffee shop feels like a second home to the writer.",a:true}
+ ],
+ open:[
+  "Is there a special café or place in your town? Describe it.",
+  "Who do you like to meet for coffee, and why?",
+  "Why do you think old places can feel like a 'second home'?",
+  "What do you usually do when you meet a friend at a café?",
+  "Would you like a place like 'The Blue Cup'? Explain."
+ ]
+});
+
+READINGS.push({
+ n:2, title:"A Letter from an Old Friend",
+ text:`Last week, I received a surprise in my mailbox. It was a real letter, written by hand, not an email. The name on the back was Carlos, my best friend from high school. We had not spoken in eight years. My hands were shaking as I opened it. Carlos wrote that he often thought about our football games and our crazy adventures after class. He said he now lives in another country and works as a teacher. At the end of the letter, he asked if we could meet again when he visits next summer. I felt so happy that I read the letter three times. That same evening, I sat down and wrote a long answer. I told him about my family, my job, and how much I missed our friendship. Sometimes a simple letter can bring two old friends together again.`,
+ mc:[
+  {q:"What did the writer receive?",opts:["An email","A handwritten letter","A phone call","A photo"],a:1},
+  {q:"Who wrote it?",opts:["Carlos, an old school friend","A teacher","A cousin","A neighbour"],a:0},
+  {q:"How long had they not spoken?",opts:["Eight years","Two months","One year","Twenty years"],a:0},
+  {q:"What is Carlos's job now?",opts:["A doctor","A teacher","A football player","A driver"],a:1},
+  {q:"What did the writer do that evening?",opts:["Wrote a long answer","Threw the letter away","Called the police","Forgot about it"],a:0}
+ ],
+ tf:[
+  {q:"The letter was written by hand.",a:true},
+  {q:"Carlos and the writer talked every day.",a:false},
+  {q:"Carlos now lives in another country.",a:true},
+  {q:"The writer read the letter only once.",a:false},
+  {q:"Carlos wants to meet the writer next summer.",a:true}
+ ],
+ open:[
+  "Have you ever received a letter that made you happy?",
+  "Do you prefer letters or messages? Why?",
+  "What would you write to an old friend after many years?",
+  "Why do you think the writer's hands were shaking?",
+  "Is there an old friend you would like to write to? Who?"
+ ]
+});
+
+READINGS.push({
+ n:3, title:"The School Reunion",
+ text:`Twenty years after finishing school, my old class organised a big reunion. It was held in the same school garden where we used to play. When I arrived, I felt nervous and excited at the same time. Would my friends remember me? Soon, I saw familiar faces everywhere. Some people looked very different, with grey hair or glasses, but their smiles were the same. We ate together, danced to old songs, and shared funny stories from our childhood. My old teacher, Mrs. López, was there too. She was over seventy years old, but she still remembered all our names. The best moment was when we took a big group photo, just like in the past. Before we said goodbye, we promised to meet again every year. That night, I went home tired but very happy. Old friends are like treasure: you must never lose them.`,
+ mc:[
+  {q:"How many years after school was the reunion?",opts:["Twenty years","Five years","Ten years","Fifty years"],a:0},
+  {q:"Where was the reunion held?",opts:["In a restaurant","In the school garden","At a beach","In a stadium"],a:1},
+  {q:"How did the writer feel on arriving?",opts:["Bored","Nervous and excited","Angry","Sleepy"],a:1},
+  {q:"Who was Mrs. López?",opts:["A classmate","The old teacher","The cook","A singer"],a:1},
+  {q:"What did they promise before saying goodbye?",opts:["To meet again every year","To never meet again","To move abroad","To change schools"],a:0}
+ ],
+ tf:[
+  {q:"The reunion happened in the same school garden.",a:true},
+  {q:"Nobody remembered the writer.",a:false},
+  {q:"Mrs. López remembered all their names.",a:true},
+  {q:"They took a group photo.",a:true},
+  {q:"The writer went home sad and angry.",a:false}
+ ],
+ open:[
+  "Would you like to go to a school reunion? Why or why not?",
+  "What would you do at a reunion with old classmates?",
+  "Do you still remember your favorite teacher? Describe them.",
+  "Why does the writer compare old friends to 'treasure'?",
+  "What song would remind you of your school days?"
+ ]
+});
+
+READINGS.push({
+ n:4, title:"My Best Friend Lives Far Away",
+ text:`My best friend, Lucía, moved to Canada three years ago. At first, I was very sad because we could not see each other every day. But we found a way to stay close. Every Sunday evening, we have a video call. She tells me about the cold snow and her new friends, and I tell her about our town and my family. Last month, we even watched the same film at the same time, each one in our own house, and we sent funny messages during the movie. Distance is difficult, but it has not broken our friendship. We are planning a big trip together next year. She will come to visit my country, and I will show her all my favorite places. Real friendship does not need to be close every day. It only needs love, patience, and a good internet connection!`,
+ mc:[
+  {q:"Where did Lucía move?",opts:["To Canada","To Spain","To Brazil","To Japan"],a:0},
+  {q:"How often do they have a video call?",opts:["Every Sunday evening","Every morning","Once a year","Never"],a:0},
+  {q:"What did they do last month?",opts:["Watched the same film at the same time","Travelled together","Met at school","Wrote a book"],a:0},
+  {q:"What are they planning for next year?",opts:["A big trip together","A new job","A wedding","A move to Canada"],a:0},
+  {q:"According to the writer, what does real friendship need?",opts:["Money and cars","Love, patience and internet","To live next door","Many gifts"],a:1}
+ ],
+ tf:[
+  {q:"Lucía moved away three years ago.",a:true},
+  {q:"They never talk because of the distance.",a:false},
+  {q:"They watched the same film at the same time.",a:true},
+  {q:"Lucía will visit the writer's country.",a:true},
+  {q:"The writer believes distance has broken their friendship.",a:false}
+ ],
+ open:[
+  "Do you have a friend who lives far away? How do you keep in touch?",
+  "What do you talk about during video calls with friends?",
+  "Is it possible to keep a friendship across long distances? Explain.",
+  "Where would you take a friend who visits your country?",
+  "What do you think real friendship needs?"
+ ]
+});
+
+READINGS.push({
+ n:5, title:"The Box of Old Photos",
+ text:`One rainy afternoon, my mother found an old box in the garage. Inside, there were hundreds of old photographs. We sat on the floor and looked at them together for hours. There were pictures of my parents when they were young, my first birthday, and old family trips to the mountains. I laughed when I saw a photo of my dad with very long hair and funny clothes. My mother became a little emotional when she saw a picture of her own grandmother. "Time passes so fast," she said quietly. We decided to choose our favorite photos and put them in a new album. Now this album sits on the table in our living room. When friends or family visit, we love to show them the pictures and tell the stories behind each one. Old photos are like little doors to the past.`,
+ mc:[
+  {q:"Where did the mother find the old box?",opts:["In the garage","In the kitchen","At school","In the car"],a:0},
+  {q:"What was inside the box?",opts:["Hundreds of old photos","Money","Letters","Toys"],a:0},
+  {q:"Why did the writer laugh?",opts:["At a photo of dad with long hair","At a broken toy","At the rain","At a joke"],a:0},
+  {q:"Why did the mother become emotional?",opts:["She saw a photo of her grandmother","She lost money","She was tired","She was cold"],a:0},
+  {q:"What did they do with the favorite photos?",opts:["Put them in a new album","Threw them away","Sold them","Hid them"],a:0}
+ ],
+ tf:[
+  {q:"They looked at the photos for only one minute.",a:false},
+  {q:"There were photos of family trips to the mountains.",a:true},
+  {q:"The mother said time passes very slowly.",a:false},
+  {q:"They made a new photo album.",a:true},
+  {q:"The album is now in the living room.",a:true}
+ ],
+ open:[
+  "Do you have old family photos at home? What do they show?",
+  "Which old photo would make you laugh or smile?",
+  "Why do you think the writer calls photos 'little doors to the past'?",
+  "Do you prefer printed photos or digital photos? Why?",
+  "What story behind a photo would you like to tell a friend?"
+ ]
+});
+
+READINGS.push({
+ n:6, title:"A Surprise at the Airport",
+ text:`I was waiting at the airport for my flight when I heard someone call my name. I turned around and could not believe my eyes. It was Pedro, my old neighbour from when I was a child! We used to ride our bikes together every afternoon. He was now a pilot, dressed in a smart blue uniform. We had only thirty minutes before my flight, so we sat down quickly with two coffees and talked fast. He told me about his travels around the world, and I told him about my new job. We laughed about the day we fell off our bikes into a big puddle of mud. When the speaker announced my flight, we hugged and exchanged phone numbers. As I walked to the gate, I smiled. Life is full of surprises, and sometimes the best ones happen when you least expect them.`,
+ mc:[
+  {q:"Where was the writer?",opts:["At the airport","At the station","At school","At the beach"],a:0},
+  {q:"Who called the writer's name?",opts:["Pedro, an old neighbour","A pilot stranger","The writer's boss","A teacher"],a:0},
+  {q:"What is Pedro's job now?",opts:["A pilot","A doctor","A cook","A teacher"],a:0},
+  {q:"How much time did they have?",opts:["Thirty minutes","Two hours","All day","Five minutes"],a:0},
+  {q:"What funny memory did they laugh about?",opts:["Falling into mud with their bikes","Losing a football","A school test","A birthday cake"],a:0}
+ ],
+ tf:[
+  {q:"The writer met Pedro at a train station.",a:false},
+  {q:"Pedro and the writer used to ride bikes together.",a:true},
+  {q:"They had a lot of time before the flight.",a:false},
+  {q:"They exchanged phone numbers.",a:true},
+  {q:"The writer thinks life is full of surprises.",a:true}
+ ],
+ open:[
+  "Have you ever met someone you knew in an unexpected place?",
+  "What childhood game or activity do you remember best?",
+  "If you had only 30 minutes with an old friend, what would you talk about?",
+  "Do you like surprises? Why or why not?",
+  "Describe a happy surprise that once happened to you."
+ ]
+});
+
+READINGS.push({
+ n:7, title:"Summer Days by the River",
+ text:`When I was a child, my family spent every summer in a small village near a river. My cousins and I were always together. In the morning, we swam in the cool water and caught little fish. In the afternoon, we climbed trees and built small houses with branches. At night, my grandfather told us stories about the old times while we ate fresh bread and cheese. We did not have phones or video games, but we were never bored. We were free and happy. Now, many years later, my cousins live in different cities, and we are all very busy. But every summer, we try to return to the village for a few days. The river is still there, the trees are bigger, and our childhood memories come back like a warm wave. Those simple summers were the happiest days of my life.`,
+ mc:[
+  {q:"Where did the family spend every summer?",opts:["In a village near a river","In a big city","At the beach","In the mountains"],a:0},
+  {q:"What did the children do in the morning?",opts:["Swam and caught fish","Watched TV","Studied","Slept"],a:0},
+  {q:"Who told them stories at night?",opts:["The grandfather","A teacher","A neighbour","The mother"],a:0},
+  {q:"Why were they never bored without phones?",opts:["They played outside and were free","They had many toys","They watched films","They went shopping"],a:0},
+  {q:"What do the cousins try to do every summer now?",opts:["Return to the village","Travel abroad","Stay in the city","Open a business"],a:0}
+ ],
+ tf:[
+  {q:"The children swam in the river in the morning.",a:true},
+  {q:"They had phones and video games.",a:false},
+  {q:"The grandfather told stories at night.",a:true},
+  {q:"The cousins now live in the same city.",a:false},
+  {q:"The writer says those summers were the happiest days.",a:true}
+ ],
+ open:[
+  "Where did you spend your summers as a child?",
+  "What did you do for fun before phones and video games?",
+  "Do you have a special place that brings back happy memories?",
+  "Who did you play with most when you were young?",
+  "Why do you think simple days can be the happiest?"
+ ]
+});
+
+READINGS.push({
+ n:8, title:"The Friendship Bracelet",
+ text:`When I was ten years old, my best friend Marta gave me a small bracelet made of colourful threads. She made one for herself too, exactly the same. "Now we are friends forever," she said with a big smile. We wore our bracelets every single day. Years later, Marta's family moved to another city, and we slowly lost contact. Life became busy, and I almost forgot about the bracelet. Then, last week, I found it again in an old drawer. The colours were faded, but it was still there. I felt a wave of emotion. That same day, I searched for Marta on the internet and sent her a message with a photo of the old bracelet. A few hours later, she replied with a photo of her own bracelet — she had kept it too! We are now planning to meet again after fifteen years. A small object can keep a big friendship alive.`,
+ mc:[
+  {q:"What did Marta give the writer?",opts:["A friendship bracelet","A book","A photo","A ring"],a:0},
+  {q:"How old was the writer at that time?",opts:["Ten years old","Five years old","Fifteen years old","Twenty years old"],a:0},
+  {q:"Why did they lose contact?",opts:["Marta's family moved away","They had a fight","They forgot each other on purpose","They changed schools"],a:0},
+  {q:"Where did the writer find the bracelet again?",opts:["In an old drawer","In the garden","At school","In a shop"],a:0},
+  {q:"What did Marta send back?",opts:["A photo of her own bracelet","Money","A letter","Nothing"],a:0}
+ ],
+ tf:[
+  {q:"Marta made two identical bracelets.",a:true},
+  {q:"The writer never wore the bracelet.",a:false},
+  {q:"The writer found the bracelet last week.",a:true},
+  {q:"Marta had thrown her bracelet away.",a:false},
+  {q:"They are planning to meet again.",a:true}
+ ],
+ open:[
+  "Do you have a special object from a friend? Describe it.",
+  "Why can small objects be so important to us?",
+  "Have you ever found something old that brought back memories?",
+  "How would you try to find a lost friend today?",
+  "What does 'friends forever' mean to you?"
+ ]
+});
+
+READINGS.push({
+ n:9, title:"A New Friend in a New City",
+ text:`Last year, I moved to a new city for my studies. At first, I felt very lonely. I did not know anyone, and the streets were strange to me. During my first week at university, I sat alone in the cafeteria. Then a girl named Elena sat next to me and started to talk. She was friendly and funny, and we quickly became friends. She showed me the best places to eat, the cheapest shops, and the most beautiful parks in the city. Thanks to Elena, the new city stopped feeling cold and started to feel like home. Now we study together, cook together, and help each other with problems. I learned an important lesson: a good friend can change everything. Even in a strange place, far from your family, friendship can make you feel safe and happy again.`,
+ mc:[
+  {q:"Why did the writer move to a new city?",opts:["For studies","For a new job","For holidays","For family"],a:0},
+  {q:"How did the writer feel at first?",opts:["Very lonely","Very happy","Angry","Excited"],a:0},
+  {q:"Who became the writer's friend?",opts:["Elena","Marta","Ana","Lucía"],a:0},
+  {q:"What did Elena show the writer?",opts:["The best places in the city","A new country","Her family","A new language"],a:0},
+  {q:"What lesson did the writer learn?",opts:["A good friend can change everything","Money is everything","Cities are bad","It is better to be alone"],a:0}
+ ],
+ tf:[
+  {q:"The writer knew many people in the new city.",a:false},
+  {q:"Elena was friendly and funny.",a:true},
+  {q:"Elena showed the writer good places to eat.",a:true},
+  {q:"The new city always felt cold to the writer.",a:false},
+  {q:"Now they study and cook together.",a:true}
+ ],
+ open:[
+  "Have you ever felt lonely in a new place? What happened?",
+  "How can you make new friends in a new city or school?",
+  "What would you show a new friend in your town?",
+  "Why is friendship important when you are far from family?",
+  "Describe a person who was kind to you when you needed it."
+ ]
+});
+
+READINGS.push({
+ n:10, title:"The Promise We Kept",
+ text:`When my friend Daniel and I finished school, we made a special promise. We said that, in exactly ten years, we would meet again at the top of the small hill near our town. It was our favourite place as teenagers. We used to climb up there to watch the sunset and talk about our dreams. The years passed, and life took us in different directions. I sometimes wondered if Daniel still remembered our promise. Finally, the day arrived. With a nervous heart, I climbed the hill. And there he was, waiting for me, with the same wide smile! We hugged and laughed like teenagers again. We sat on the grass, watched the sunset, and shared everything that had happened in ten years. Some promises are easy to forget, but true friends always keep the important ones.`,
+ mc:[
+  {q:"What promise did Daniel and the writer make?",opts:["To meet again in ten years","To call every day","To live together","To open a shop"],a:0},
+  {q:"Where would they meet?",opts:["At the top of a hill","At the school","At a café","At the beach"],a:0},
+  {q:"What did they do there as teenagers?",opts:["Watched the sunset and talked about dreams","Played football","Studied","Sold things"],a:0},
+  {q:"How did the writer feel climbing the hill?",opts:["Nervous","Bored","Angry","Sleepy"],a:0},
+  {q:"Was Daniel there?",opts:["Yes, with the same smile","No, he forgot","He came late","He sent a friend"],a:0}
+ ],
+ tf:[
+  {q:"They promised to meet again in ten years.",a:true},
+  {q:"The hill was their favourite place as teenagers.",a:true},
+  {q:"The writer was sure Daniel would not come.",a:false},
+  {q:"Daniel was waiting at the top of the hill.",a:true},
+  {q:"They sat and watched the sunset together.",a:true}
+ ],
+ open:[
+  "Have you ever made a special promise to a friend?",
+  "What was your favourite place to meet friends as a teenager?",
+  "What dreams did you talk about when you were young?",
+  "Do you think it is important to keep promises to friends? Why?",
+  "If you met an old friend after ten years, what would you say?"
+ ]
+});
+
+/* === END_READINGS_MARKER === */
+
+/* ============================================================
+   STATE + HELPERS
+   ============================================================ */
+let XP=0, DONE=0, answered={};
+const $=(s,el=document)=>el.querySelector(s);
+const ce=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1500);}
+function addXP(n){XP+=n;$("#xp").textContent=XP;}
+function markDone(id){if(answered[id])return false;answered[id]=1;DONE++;$("#done").textContent=DONE;updateProgress();return true;}
+function updateProgress(){const total=window.__TOTAL__||1;$("#progbar").style.width=Math.min(100,Math.round(DONE/total*100))+"%";}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute("data-theme")==="dark";
+  h.setAttribute("data-theme",dark?"light":"dark");
+  $("#themeBtn").textContent=dark?"🌙 Dark":"☀️ Light";
+}
+
+/* ---------- render a Ghibli scene frame ---------- */
+function sceneHTML(img,unitN,idx){
+  return `<figure class="scene" style="margin:18px 0">
+    <div class="art">
+      <span class="lbl">${img.lbl||('Unit '+unitN+' · Scene '+idx)}</span>
+      <span class="em">${img.em||"🎨"}</span>
+      <span class="ghb">🎬 Studio-Ghibli style</span>
+    </div>
+    <figcaption class="meta">
+      <p class="prm"><b>Image prompt:</b> ${esc(img.prompt)}</p>
+      <p class="obs">${esc(img.q)}</p>
+    </figcaption>
+  </figure>`;
+}
+
+/* ---------- render question sets ---------- */
+function mcHTML(id,arr){
+  return arr.map((q,i)=>{
+    const opts=q.opts.map((o,j)=>`<button class="opt" onclick="pickMC(this,${j===q.a},'${id}_${i}')">${esc(o)}</button>`).join("");
+    return `<div class="q"><p class="qt"><span class="num">${i+1}.</span>${esc(q.q)}</p>
+      <div class="opts">${opts}</div><div class="fb" id="fb_${id}_${i}"></div></div>`;
+  }).join("");
+}
+function pickMC(btn,correct,id){
+  const box=btn.closest(".q");if(box.dataset.done)return;
+  box.dataset.done=1;
+  [...box.querySelectorAll(".opt")].forEach(o=>o.disabled=true);
+  const fb=box.querySelector(".fb");
+  if(correct){btn.classList.add("ok");fb.textContent="✅ Correct!";fb.className="fb good";addXP(10);}
+  else{btn.classList.add("no");box.querySelectorAll(".opt").forEach(o=>{if(o.textContent && o.getAttribute("onclick").includes("true"))o.classList.add("ok");});
+    fb.textContent="❌ Not quite — the correct answer is highlighted.";fb.className="fb bad";addXP(2);}
+  if(markDone(id))toast(correct?"+10 XP":"+2 XP");
+}
+function tfHTML(id,arr){
+  return arr.map((q,i)=>`<div class="q"><p class="qt"><span class="num">${i+1}.</span>${esc(q.q)}</p>
+    <div class="tf">
+      <button class="opt" onclick="pickTF(this,${q.a===true},'${id}_${i}')">✔ True</button>
+      <button class="opt" onclick="pickTF(this,${q.a===false},'${id}_${i}')">✘ False</button>
+    </div><div class="fb" id="fb_${id}_${i}"></div></div>`).join("");
+}
+function pickTF(btn,correct,id){
+  const box=btn.closest(".q");if(box.dataset.done)return;box.dataset.done=1;
+  [...box.querySelectorAll(".opt")].forEach(o=>o.disabled=true);
+  const fb=box.querySelector(".fb");
+  if(correct){btn.classList.add("ok");fb.textContent="✅ Correct!";fb.className="fb good";addXP(10);}
+  else{btn.classList.add("no");fb.textContent="❌ Read the story again.";fb.className="fb bad";addXP(2);}
+  if(markDone(id))toast(correct?"+10 XP":"+2 XP");
+}
+function openHTML(id,arr,withSample){
+  return arr.map((q,i)=>{
+    const obj=typeof q==="string"?{q:q}:q;
+    const sample=obj.a?`<div class="reveal"><button onclick="this.nextElementSibling.classList.toggle('show')">💡 Sample answer</button>
+      <div class="sample"><b>Sample:</b> ${esc(obj.a)}</div></div>`:"";
+    return `<div class="q open"><p class="qt"><span class="num">${i+1}.</span>${esc(obj.q)}</p>
+      <textarea placeholder="Write your answer in English..."></textarea>${sample}</div>`;
+  }).join("");
+}
+
+/* ---------- TABS ENGINE ---------- */
+const TABS=[
+  {id:"home",label:"🏠 Home"},
+  {id:"vocab",label:"📚 Vocabulary"},
+  {id:"stories",label:"📖 Stories"},
+  {id:"readings",label:"📰 Readings"},
+  {id:"games",label:"🎮 Games"},
+  {id:"speak",label:"🗣️ Speaking"}
+];
+let curTab=0;
+function buildTabs(){
+  const t=$("#tabs");
+  TABS.forEach((tb,i)=>{
+    const b=ce("button","tab"+(i===0?" on":""),tb.label);
+    b.onclick=()=>showTab(i);
+    t.appendChild(b);
+  });
+}
+function showTab(i){
+  curTab=i;
+  [...$("#tabs").children].forEach((c,j)=>c.classList.toggle("on",j===i));
+  [...document.querySelectorAll(".view")].forEach((v,j)=>v.classList.toggle("on",v.id==="view-"+TABS[i].id));
+  $("#navinfo").textContent=`${TABS[i].label.replace(/^[^ ]+ /,"")} · ${i+1}/${TABS.length}`;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function nextTab(){if(curTab<TABS.length-1)showTab(curTab+1);}
+function prevTab(){if(curTab>0)showTab(curTab-1);}
+
+/* ============================================================
+   VIEW RENDERERS
+   ============================================================ */
+function legendHTML(){
+  return `<div class="legend">
+    <span><i class="dot" style="background:var(--id)"></i> Idiom</span>
+    <span><i class="dot" style="background:var(--pv)"></i> Phrasal verb</span>
+    <span><i class="dot" style="background:#94a3b8"></i> <b>Key word</b></span>
+  </div>`;
+}
+
+function renderHome(){
+  const v=ce("div","view on");v.id="view-home";
+  v.innerHTML=`
+   <div class="slide">
+     <span class="tag">Virtual Class · A2–B1</span>
+     <h1>Meeting with an Old Friend 👯</h1>
+     <p class="lead">Reuníon con un viejo amigo — stories, readings, games and speaking to greet old friends, catch up and talk about memories.</p>
+     <div class="scene">
+       <div class="art" style="background:linear-gradient(135deg,#6d8bd0,#c9a3d4 55%,#f3d9a4)">
+         <span class="lbl">Cover · Studio-Ghibli style</span><span class="em">👫☕🌳</span><span class="ghb">🎬 Studio-Ghibli style</span>
+       </div>
+       <figcaption class="meta"><p class="prm"><b>Image prompt:</b> Studio-Ghibli style cover: ${CHARS} smiling and hugging in front of a cosy coffee shop on a sunny street, falling leaves, warm nostalgic light, hand-painted watercolor.</p>
+       <p class="obs">Who are the people? Where are they? How do they feel?</p></figcaption>
+     </div>
+     <h3>How to use this class</h3>
+     <p class="muted">Move through the tabs at the top. Read each story, look carefully at the Studio-Ghibli image prompts and answer the observation questions out loud. Then complete the quizzes — they give you <b>XP ⭐</b>. Try the games and finish with the speaking tasks.</p>
+     ${legendHTML()}
+     <div class="ginfo">
+       <div class="b"><b>10 Stories</b> with 4–6 images each, idioms, phrasal verbs and 20 questions per story.</div>
+       <div class="b"><b>10 Readings</b> about friendship, memories, trips, school and reunions.</div>
+       <div class="b"><b>10 Games</b> to practise and elicit vocabulary.</div>
+       <div class="b"><b>Speaking</b> with a model story before every oral task.</div>
+     </div>
+     <p class="muted">👉 Tip: use the <button class="reveal" style="display:inline" onclick="toggleTheme()"><b>🌙/☀️ theme button</b></button> in the top bar for dark or light mode.</p>
+   </div>`;
+  return v;
+}
+
+function renderVocab(){
+  const v=ce("div","view");v.id="view-vocab";
+  const cards=VOCAB.map(x=>`<div class="vcard"><div class="em">${x.em}</div><div class="w">${x.w}</div><div class="pr">/${x.pr}/</div><div class="es">${x.es}</div></div>`).join("");
+  const ip=UNITS.map(u=>`<div class="xp">
+     <div class="it"><div class="h"><span class="em">💜</span>Unit ${u.n} · Idioms</div>
+       <div>• <span class="id">${u.idioms[0].en}</span> — ${u.idioms[0].es}</div>
+       <div>• <span class="id">${u.idioms[1].en}</span> — ${u.idioms[1].es}</div></div>
+     <div class="it"><div class="h"><span class="em">💚</span>Unit ${u.n} · Phrasal verbs</div>
+       <div>• <span class="pv">${u.pvs[0].en}</span> — ${u.pvs[0].es}</div>
+       <div>• <span class="pv">${u.pvs[1].en}</span> — ${u.pvs[1].es}</div></div>
+   </div>`).join("");
+  v.innerHTML=`
+   <div class="slide">
+     <span class="tag">Core vocabulary</span>
+     <h2>📚 Key Words</h2>
+     <p class="lead">Read the word and its pronunciation. Look at the picture and think of the meaning <b>without translating</b>.</p>
+     <div class="vgrid">${cards}</div>
+   </div>
+   <div class="slide">
+     <span class="tag">Expressions</span>
+     <h2>💬 Idioms & Phrasal Verbs</h2>
+     <p class="lead">Every story uses two idioms and two phrasal verbs. Here is the full list for reference.</p>
+     ${ip}
+   </div>`;
+  return v;
+}
+
+function storyBodyHTML(u){
+  return u.story.map((b,i)=>b.p?`<p>${b.p}</p>`:sceneHTML(b.img,u.n,Math.ceil((i+1)/2))).join("");
+}
+
+function renderStories(){
+  const v=ce("div","view");v.id="view-stories";
+  const pills=UNITS.map((u,i)=>`<button class="upill${i===0?' on':''}" onclick="showUnit(${i})">${u.n}</button>`).join("");
+  v.innerHTML=`<div class="slide"><span class="tag">Storytelling</span><h2>📖 Stories</h2>
+    <p class="lead">Choose a story. Read it, study the images and answer the four question sets.</p>
+    <div class="unitnavwrap">${pills}</div></div>
+    <div id="storyHost"></div>`;
+  setTimeout(()=>showUnit(0),0);
+  return v;
+}
+function showUnit(i){
+  [...document.querySelectorAll('#view-stories .upill')].forEach((p,j)=>p.classList.toggle('on',j===i));
+  const u=UNITS[i];const id="u"+u.n;
+  const idchips=`<div class="xp">
+    <div class="it"><div class="h">💜 Idioms (in order)</div><div>1. <span class="id">${u.idioms[0].en}</span> — ${u.idioms[0].es}</div><div>2. <span class="id">${u.idioms[1].en}</span> — ${u.idioms[1].es}</div></div>
+    <div class="it"><div class="h">💚 Phrasal verbs (in order)</div><div>1. <span class="pv">${u.pvs[0].en}</span> — ${u.pvs[0].es}</div><div>2. <span class="pv">${u.pvs[1].en}</span> — ${u.pvs[1].es}</div></div></div>`;
+  const host=$("#storyHost");
+  host.innerHTML=`
+   <div class="slide">
+     <span class="tag">Story ${u.n} of 10</span>
+     <h2>${u.title}</h2>
+     <p class="lead">${u.theme}</p>
+     ${legendHTML()}
+     ${idchips}
+     <div class="story">${storyBodyHTML(u)}</div>
+     <div class="model"><div class="lab">⭐ Model Story — example output</div><p>${u.model}</p></div>
+     <div class="finalq"><span class="l">Speaking question</span>${u.finalq.en}<br><span class="muted">${u.finalq.es}</span></div>
+   </div>
+   <div class="slide">
+     <span class="tag">Comprehension · Story ${u.n}</span>
+     <h3>Based only on the story</h3>
+     <div class="qhead"><span class="n">A</span> Multiple Choice</div>${mcHTML(id+"mc",u.mc)}
+     <div class="qhead"><span class="n">B</span> True / False</div>${tfHTML(id+"tf",u.tf)}
+     <div class="qhead"><span class="n">C</span> Open Questions</div>${openHTML(id+"op",u.open)}
+     <div class="qhead"><span class="n">D</span> Vocabulary Recall</div>${openHTML(id+"rc",u.recall,true)}
+   </div>`;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderReadings(){
+  const v=ce("div","view");v.id="view-readings";
+  const pills=READINGS.map((r,i)=>`<button class="upill${i===0?' on':''}" onclick="showReading(${i})">${r.n}</button>`).join("");
+  v.innerHTML=`<div class="slide"><span class="tag">Reading practice</span><h2>📰 Readings</h2>
+    <p class="lead">Ten short texts about friendship, memories and reunions. Read and answer.</p>
+    <div class="unitnavwrap">${pills}</div></div><div id="readHost"></div>`;
+  setTimeout(()=>showReading(0),0);
+  return v;
+}
+function showReading(i){
+  [...document.querySelectorAll('#view-readings .upill')].forEach((p,j)=>p.classList.toggle('on',j===i));
+  const r=READINGS[i];const id="r"+r.n;
+  $("#readHost").innerHTML=`
+   <div class="slide">
+     <span class="tag">Reading ${r.n} of 10</span>
+     <h2>${r.title}</h2>
+     <div class="story"><p>${r.text}</p></div>
+   </div>
+   <div class="slide">
+     <span class="tag">Comprehension · Reading ${r.n}</span>
+     <div class="qhead"><span class="n">A</span> Multiple Choice</div>${mcHTML(id+"mc",r.mc)}
+     <div class="qhead"><span class="n">B</span> True / False</div>${tfHTML(id+"tf",r.tf)}
+     <div class="qhead"><span class="n">C</span> Open Questions</div>${openHTML(id+"op",r.open)}
+   </div>`;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderSpeak(){
+  const v=ce("div","view");v.id="view-speak";
+  const blocks=UNITS.map(u=>`
+   <div class="slide">
+     <span class="tag">Oral activity · Unit ${u.n}</span>
+     <h3>${u.title}</h3>
+     <div class="model"><div class="lab">⭐ Model Story (listen / read first)</div><p>${u.model}</p></div>
+     <div class="speak"><div class="ttl">🗣️ Your turn — use these expressions</div>
+       <ul>
+         <li><span class="id">${u.idioms[0].en}</span> · <span class="id">${u.idioms[1].en}</span></li>
+         <li><span class="pv">${u.pvs[0].en}</span> · <span class="pv">${u.pvs[1].en}</span></li>
+       </ul></div>
+     <div class="finalq"><span class="l">Answer & speak</span>${u.finalq.en}<br><span class="muted">${u.finalq.es}</span></div>
+   </div>`).join("");
+  v.innerHTML=`<div class="slide"><span class="tag">Speaking</span><h2>🗣️ Speaking Tasks</h2>
+     <p class="lead">Before each task there is a <b>Model Story</b> — an example of the output you should produce. Use the idioms and phrasal verbs of the unit.</p></div>${blocks}`;
+  return v;
+}
+
+/* ============================================================
+   GAMES
+   ============================================================ */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const IDPV=[];
+UNITS.forEach(u=>{u.idioms.forEach(x=>IDPV.push({en:x.en,es:x.es,t:"idiom"}));u.pvs.forEach(x=>IDPV.push({en:x.en,es:x.es,t:"pv"}));});
+
+function gameCard(tag,title,obj,inst,score,bodyId){
+  return `<div class="gcard"><span class="gtag">${tag}</span><h3>${title}</h3>
+    <div class="ginfo"><div class="b"><b>Objective</b>${obj}</div><div class="b"><b>How to play</b>${inst}</div>
+    <div class="b"><b>Scoring</b>${score}</div><div class="b"><b>Your score</b><span class="gscore" id="sc_${bodyId}">0</span></div></div>
+    <div class="gboard" id="${bodyId}"></div></div>`;
+}
+function setScore(id,n){const e=$("#sc_"+id);if(e)e.textContent=n;}
+
+function renderGames(){
+  const v=ce("div","view");v.id="view-games";
+  v.innerHTML=`<div class="slide"><span class="tag">Play & learn</span><h2>🎮 Vocabulary Games</h2>
+    <p class="lead">Ten interactive games with automatic feedback. Earn points and elicit the vocabulary!</p></div>
+    ${gameCard("Game 1 · Mystery Image","🔍 Mystery Image","Recognise a word from a blurry picture.","Look at the blurry emoji and choose the correct word. A correct answer makes the image clear.","+10 per correct answer.","g_mystery")}
+    ${gameCard("Game 2 · Guess the Word","✏️ Guess the Word","Produce the English word from a clue.","Read the Spanish clue and type the English word. Press Check.","+10 per correct word.","g_guess")}
+    ${gameCard("Game 3 · Memory Challenge","🧠 Memory Challenge","Match each word with its picture.","Flip two cards. If the word and the picture match, they stay open.","+10 per pair. Try to finish with few tries!","g_memory")}
+    ${gameCard("Game 4 · Hidden Object","🕵️ Hidden Object","Find a target item in the grid.","Find and click ALL the target emojis hidden in the grid. Avoid wrong clicks.","+5 per correct, −2 per mistake.","g_hidden")}
+    ${gameCard("Game 5 · Drag & Match","🔗 Drag & Match","Match idioms/phrasal verbs to meanings.","Click a meaning, then click the correct expression to connect them.","+10 per correct match.","g_match")}
+    ${gameCard("Game 6 · Story Builder","🧩 Story Builder","Put a short story in the correct order.","Click the sentences in the correct order (1 → 5).","+10 per sentence in the right place.","g_builder")}
+    ${gameCard("Game 7 · Picture Detective","🔎 Picture Detective","Understand what happens in a scene.","Look at the scene and choose the best description.","+10 per correct answer.","g_detective")}
+    ${gameCard("Game 8 · Vocabulary Race","⏱️ Vocabulary Race","Answer as many words as you can in 30s.","Press Start. Match the word to its meaning quickly before time runs out.","+10 per correct answer in 30 seconds.","g_race")}
+    ${gameCard("Game 9 · Spin & Speak","🎡 Spin & Speak","Speak using a random expression.","Press Spin. Use the word/expression you get in a full sentence out loud.","+5 every time you spin and speak.","g_spin")}
+    ${gameCard("Game 10 · Who Am I?","❓ Who Am I?","Guess the expression from a riddle.","Read the riddle and choose the correct expression.","+10 per correct answer.","g_whoami")}`;
+  setTimeout(initGames,0);
+  return v;
+}
+
+/* ---- Game 1: Mystery Image ---- */
+let G1=0;
+function initGames(){
+  buildMystery();buildGuess();buildMemory();buildHidden();buildMatch();
+  buildBuilder();buildDetective();buildRace();buildSpin();buildWhoAmI();
+}
+function buildMystery(){
+  G1=0;setScore("g_mystery",0);
+  const target=VOCAB[Math.floor(Math.random()*VOCAB.length)];
+  const opts=shuffle([target,...shuffle(VOCAB.filter(x=>x!==target)).slice(0,3)]);
+  $("#g_mystery").innerHTML=`<div class="spinwrap"><div class="spinner" id="myimg" style="filter:blur(9px);font-size:54px">${target.em}</div></div>
+    <div class="opts" style="grid-template-columns:1fr 1fr">${opts.map(o=>`<button class="opt" onclick="ansMystery(this,'${o.w==target.w}','${target.w}')">${o.w}</button>`).join("")}</div>
+    <div class="fb" id="fb_mystery"></div>`;
+}
+function ansMystery(btn,ok,word){
+  const board=$("#g_mystery");if(board.dataset.d)return;board.dataset.d=1;
+  ok=ok==="true";const fb=$("#fb_mystery");
+  [...board.querySelectorAll(".opt")].forEach(o=>o.disabled=true);
+  if(ok){btn.classList.add("ok");$("#myimg").style.filter="none";fb.textContent="✅ Correct! The word is "+word+".";fb.className="fb good";G1+=10;setScore("g_mystery",G1);addXP(10);}
+  else{btn.classList.add("no");$("#myimg").style.filter="none";fb.textContent="❌ It was: "+word+".";fb.className="fb bad";}
+  setTimeout(()=>{board.dataset.d="";buildMystery();},1400);
+}
+/* ---- Game 2: Guess the Word ---- */
+let G2=0,g2list=[],g2i=0;
+function buildGuess(){
+  G2=0;setScore("g_guess",0);g2list=shuffle(VOCAB).slice(0,8);g2i=0;showGuess();
+}
+function showGuess(){
+  if(g2i>=g2list.length){$("#g_guess").innerHTML=`<p class="fb good">🎉 Finished! Final score: ${G2} XP</p><button class="gbtn ghost" onclick="buildGuess()">Play again</button>`;return;}
+  const w=g2list[g2i];
+  $("#g_guess").innerHTML=`<p>Clue ${g2i+1}/8 — <b>${w.es}</b> ${w.em}</p>
+    <input class="ginput" id="gin" placeholder="type the English word" autocomplete="off">
+    <button class="gbtn" onclick="ansGuess()">Check</button> <button class="gbtn ghost" onclick="g2i++;showGuess()">Skip</button>
+    <div class="fb" id="fb_guess"></div>`;
+  setTimeout(()=>{const el=$("#gin");if(el){el.focus();el.onkeydown=e=>{if(e.key==='Enter')ansGuess();};}},30);
+}
+function ansGuess(){
+  const w=g2list[g2i];const val=($("#gin").value||"").trim().toLowerCase();const fb=$("#fb_guess");
+  if(val===w.w.toLowerCase()){fb.textContent="✅ Correct!";fb.className="fb good";G2+=10;setScore("g_guess",G2);addXP(10);g2i++;setTimeout(showGuess,800);}
+  else{fb.textContent="❌ Try again. (Hint: starts with '"+w.w[0]+"')";fb.className="fb bad";}
+}
+/* ---- Game 3: Memory ---- */
+let G3=0,g3first=null,g3lock=false;
+function buildMemory(){
+  G3=0;setScore("g_memory",0);g3first=null;g3lock=false;
+  const pick=shuffle(VOCAB).slice(0,6);
+  let cards=[];pick.forEach(p=>{cards.push({k:p.w,f:p.w,t:"w"});cards.push({k:p.w,f:p.em,t:"e"});});
+  cards=shuffle(cards);
+  $("#g_memory").innerHTML=`<div class="cards" style="grid-template-columns:repeat(4,1fr)">${cards.map((c,i)=>`<div class="mc" data-k="${c.k}" data-i="${i}" onclick="flipMem(this)"><span style="opacity:0">${c.f}</span></div>`).join("")}</div><div class="fb" id="fb_memory"></div>`;
+  // store faces
+  [...$("#g_memory").querySelectorAll(".mc")].forEach((el,i)=>{el.dataset.face=cards[i].f;});
+}
+function flipMem(el){
+  if(g3lock||el.classList.contains("flip")||el.classList.contains("done"))return;
+  el.classList.add("flip");el.firstChild.style.opacity="1";el.firstChild.textContent=el.dataset.face;
+  if(!g3first){g3first=el;return;}
+  if(g3first.dataset.k===el.dataset.k){el.classList.add("done");g3first.classList.add("done");g3first=null;G3+=10;setScore("g_memory",G3);addXP(10);
+    if([...$("#g_memory").querySelectorAll(".mc")].every(c=>c.classList.contains("done"))){$("#fb_memory").textContent="🎉 All matched! +"+G3+" XP";$("#fb_memory").className="fb good";}
+  }else{g3lock=true;const a=g3first,b=el;setTimeout(()=>{[a,b].forEach(x=>{x.classList.remove("flip");x.firstChild.style.opacity="0";});g3first=null;g3lock=false;},800);}
+}
+/* ---- Game 4: Hidden Object ---- */
+let G4=0;
+function buildHidden(){
+  G4=0;setScore("g_hidden",0);
+  const target=VOCAB[Math.floor(Math.random()*VOCAB.length)];
+  const fillers=shuffle(VOCAB.filter(x=>x!==target));
+  let cells=[];const count=5;
+  for(let i=0;i<count;i++)cells.push(target);
+  for(let i=0;i<20;i++)cells.push(fillers[i%fillers.length]);
+  cells=shuffle(cells);let found=0;
+  $("#g_hidden").innerHTML=`<p>Find all <b>${target.w}</b> ${target.em} (there are ${count}).</p>
+    <div class="gridhunt">${cells.map((c,i)=>`<div class="cell" data-t="${c===target}" onclick="hitHidden(this)">${c.em}</div>`).join("")}</div>
+    <div class="fb" id="fb_hidden"></div>`;
+  $("#g_hidden").dataset.left=count;
+}
+function hitHidden(el){
+  if(el.dataset.done)return;el.dataset.done=1;const fb=$("#fb_hidden");
+  if(el.dataset.t==="true"){el.classList.add("hit");G4+=5;addXP(5);let left=(+$("#g_hidden").dataset.left)-1;$("#g_hidden").dataset.left=left;
+    fb.textContent=left>0?("Good! "+left+" more to find."):"🎉 You found them all!";fb.className="fb good";}
+  else{el.classList.add("miss");G4=Math.max(0,G4-2);fb.textContent="❌ That is a different word.";fb.className="fb bad";}
+  setScore("g_hidden",G4);
+}
+/* ---- Game 5: Drag & Match ---- */
+let G5=0,g5sel=null;
+function buildMatch(){
+  G5=0;setScore("g_match",0);g5sel=null;
+  const items=shuffle(IDPV).slice(0,5);
+  const meanings=shuffle(items);
+  $("#g_match").innerHTML=`<p>Click a meaning, then click its expression.</p>
+   <p class="muted" style="font-size:13px">Meanings:</p>
+   <div class="pool">${meanings.map((m,i)=>`<button class="token" data-en="${m.en}" onclick="selMeaning(this)">${m.es}</button>`).join("")}</div>
+   <div class="drops">${items.map(it=>`<div class="drop" data-en="${it.en}"><div class="lab"><span class="${it.t==='idiom'?'id':'pv'}">${it.en}</span></div><div class="slot" onclick="dropMeaning(this)">?</div></div>`).join("")}</div>
+   <div class="fb" id="fb_match"></div>`;
+}
+function selMeaning(b){if(b.classList.contains("used"))return;[...$("#g_match").querySelectorAll(".token")].forEach(t=>t.style.outline="");g5sel=b;b.style.outline="3px solid var(--brand2)";}
+function dropMeaning(slot){
+  const fb=$("#fb_match");if(!g5sel){fb.textContent="First click a meaning.";fb.className="fb bad";return;}
+  const drop=slot.closest(".drop");if(drop.classList.contains("ok"))return;
+  if(g5sel.dataset.en===drop.dataset.en){drop.classList.add("ok");slot.textContent=g5sel.textContent;g5sel.classList.add("used");g5sel.style.outline="";g5sel=null;
+    G5+=10;setScore("g_match",G5);addXP(10);fb.textContent="✅ Correct match!";fb.className="fb good";}
+  else{fb.textContent="❌ Not the right meaning. Try another.";fb.className="fb bad";}
+}
+/* ---- Game 6: Story Builder ---- */
+let G6=0,g6order=[],g6next=0;
+function buildBuilder(){
+  G6=0;g6next=0;setScore("g_builder",0);
+  const story=[
+   "I ran into my old friend on the street.",
+   "We were very surprised and gave each other a big hug.",
+   "We went to a coffee shop to catch up.",
+   "We looked at old photos and remembered our childhood.",
+   "Before saying goodbye, we promised to keep in touch."
+  ];
+  g6order=story;const sh=shuffle(story.map((s,i)=>({s,i})));
+  $("#g_builder").innerHTML=`<p>Put the story in order (click 1 → 5):</p>
+   <div class="builder">${sh.map(o=>`<div class="bstep"><div class="num">•</div><div class="bsent" data-i="${o.i}" onclick="pickBuild(this)">${o.s}</div></div>`).join("")}</div>
+   <div class="fb" id="fb_builder"></div>`;
+}
+function pickBuild(el){
+  if(el.classList.contains("ok"))return;const fb=$("#fb_builder");
+  if(+el.dataset.i===g6next){el.classList.add("ok");el.previousElementSibling.textContent=g6next+1;g6next++;G6+=10;setScore("g_builder",G6);addXP(10);
+    fb.textContent=g6next===5?"🎉 Perfect order! +"+G6+" XP":"✅ Correct! Next sentence...";fb.className="fb good";}
+  else{fb.textContent="❌ That is not the next sentence.";fb.className="fb bad";}
+}
+/* ---- Game 7: Picture Detective ---- */
+let G7=0,g7i=0;
+const G7DATA=[
+ {em:"🤗",q:"Two friends meet after years. What are they doing?",opts:["Fighting","Giving a warm hug","Sleeping","Cooking"],a:1},
+ {em:"📷",q:"They are sitting and looking at an old photo. What is happening?",opts:["They remember the past","They are running","They are eating","They are studying"],a:0},
+ {em:"☕",q:"Two friends sit with two cups. What are they doing?",opts:["Swimming","Catching up over coffee","Driving","Singing"],a:1},
+ {em:"🏕️",q:"Friends with backpacks and a tent. What are they planning?",opts:["A camping trip","A wedding","An exam","A meeting at work"],a:0},
+ {em:"📱",q:"Two friends save each other's numbers. Why?",opts:["To keep in touch","To play music","To buy food","To take a photo"],a:0}
+];
+function buildDetective(){G7=0;g7i=0;setScore("g_detective",0);showDetective();}
+function showDetective(){
+  if(g7i>=G7DATA.length){$("#g_detective").innerHTML=`<p class="fb good">🎉 Done! Score: ${G7} XP</p><button class="gbtn ghost" onclick="buildDetective()">Play again</button>`;return;}
+  const d=G7DATA[g7i];
+  $("#g_detective").innerHTML=`<div class="spinwrap"><div class="spinner">${d.em}</div></div><p>${d.q}</p>
+   <div class="opts">${d.opts.map((o,j)=>`<button class="opt" onclick="ansDetective(this,${j===d.a})">${o}</button>`).join("")}</div>
+   <div class="fb" id="fb_detective"></div>`;
+}
+function ansDetective(btn,ok){
+  const b=$("#g_detective");if(b.dataset.d)return;b.dataset.d=1;
+  [...b.querySelectorAll(".opt")].forEach(o=>o.disabled=true);const fb=$("#fb_detective");
+  if(ok){btn.classList.add("ok");fb.textContent="✅ Correct!";fb.className="fb good";G7+=10;setScore("g_detective",G7);addXP(10);}
+  else{btn.classList.add("no");fb.textContent="❌ Look again!";fb.className="fb bad";}
+  setTimeout(()=>{b.dataset.d="";g7i++;showDetective();},1100);
+}
+/* ---- Game 8: Vocabulary Race ---- */
+let G8=0,g8t=null,g8time=30,g8cur=null;
+function buildRace(){
+  G8=0;g8time=30;setScore("g_race",0);
+  $("#g_race").innerHTML=`<p>Match the word to its meaning. You have 30 seconds!</p>
+   <button class="gbtn" onclick="startRace()">▶ Start</button> <span id="g8clock" class="gscore"></span>
+   <div id="g8area" style="margin-top:10px"></div><div class="fb" id="fb_race"></div>`;
+}
+function startRace(){
+  if(g8t)clearInterval(g8t);G8=0;g8time=30;setScore("g_race",0);
+  $("#g8clock").textContent="⏱ 30s";
+  g8t=setInterval(()=>{g8time--;$("#g8clock").textContent="⏱ "+g8time+"s";if(g8time<=0){clearInterval(g8t);$("#g8area").innerHTML="";$("#fb_race").textContent="⏰ Time! Final score: "+G8+" XP";$("#fb_race").className="fb good";}},1000);
+  raceRound();
+}
+function raceRound(){
+  if(g8time<=0)return;
+  g8cur=VOCAB[Math.floor(Math.random()*VOCAB.length)];
+  const opts=shuffle([g8cur,...shuffle(VOCAB.filter(x=>x!==g8cur)).slice(0,3)]);
+  $("#g8area").innerHTML=`<p><b>${g8cur.w}</b> ${g8cur.em}</p><div class="opts" style="grid-template-columns:1fr 1fr">${opts.map(o=>`<button class="opt" onclick="ansRace('${o.es===g8cur.es}')">${o.es}</button>`).join("")}</div>`;
+}
+function ansRace(ok){
+  if(g8time<=0)return;const fb=$("#fb_race");
+  if(ok==="true"){G8+=10;setScore("g_race",G8);addXP(10);fb.textContent="✅";fb.className="fb good";}
+  else{fb.textContent="❌";fb.className="fb bad";}
+  raceRound();
+}
+/* ---- Game 9: Spin & Speak ---- */
+let G9=0;
+const G9DATA=[...VOCAB.map(v=>v.w),...IDPV.map(x=>x.en)];
+function buildSpin(){
+  G9=0;setScore("g_spin",0);
+  $("#g_spin").innerHTML=`<div class="spinwrap"><div class="spinner" id="g9out">🎡 Press Spin!</div>
+   <button class="gbtn" onclick="doSpin()">🎡 Spin</button></div>
+   <p class="muted">Make a full sentence out loud with the word or expression you get.</p><div class="fb" id="fb_spin"></div>`;
+}
+function doSpin(){
+  const out=$("#g9out");let n=0;const iv=setInterval(()=>{out.textContent=G9DATA[Math.floor(Math.random()*G9DATA.length)];n++;
+    if(n>14){clearInterval(iv);G9+=5;setScore("g_spin",G9);addXP(5);$("#fb_spin").textContent="🗣️ Now say a sentence with it!";$("#fb_spin").className="fb good";}},80);
+}
+/* ---- Game 10: Who Am I? ---- */
+let G10=0,g10i=0;
+const G10DATA=[
+ {clue:"I am an idiom. I mean 'we have not seen each other for a long time'.",a:"Long time no see",opts:["Long time no see","My treat","Time flies","Pack up"]},
+ {clue:"I am a phrasal verb. I mean 'to meet someone by chance'.",a:"Run into",opts:["Set off","Run into","Open up","Grow up"]},
+ {clue:"I am an idiom. I mean 'to enjoy yourself very much'.",a:"Have a whale of a time",opts:["Hit it off","Have a whale of a time","Drop by","Count on"]},
+ {clue:"I am a phrasal verb. I mean 'to stay in contact with someone'.",a:"Keep in touch",opts:["Keep in touch","Look through","Hang out","Set up"]},
+ {clue:"I am an idiom. I mean 'two people who are always together'.",a:"Joined at the hip",opts:["Out of the blue","The good old days","Joined at the hip","My treat"]},
+ {clue:"I am a phrasal verb. I mean 'to share your feelings honestly'.",a:"Open up",opts:["Open up","Pack up","Bring back","Bump into"]},
+ {clue:"I am an idiom. I mean 'a real friend helps you in difficult times'.",a:"A friend in need is a friend indeed",opts:["A friend in need is a friend indeed","Time flies","Get along","Catch up"]},
+ {clue:"I am a phrasal verb. I mean 'to depend on / trust someone'.",a:"Count on",opts:["Fill in","Count on","Take back","Drop by"]}
+];
+function buildWhoAmI(){G10=0;g10i=0;setScore("g_whoami",0);showWho();}
+function showWho(){
+  if(g10i>=G10DATA.length){$("#g_whoami").innerHTML=`<p class="fb good">🎉 Done! Score: ${G10} XP</p><button class="gbtn ghost" onclick="buildWhoAmI()">Play again</button>`;return;}
+  const d=G10DATA[g10i];const opts=shuffle(d.opts);
+  $("#g_whoami").innerHTML=`<p>❓ ${d.clue}</p><div class="opts">${opts.map(o=>`<button class="opt" onclick="ansWho(this,'${o===d.a}')">${o}</button>`).join("")}</div><div class="fb" id="fb_whoami"></div>`;
+}
+function ansWho(btn,ok){
+  const b=$("#g_whoami");if(b.dataset.d)return;b.dataset.d=1;
+  [...b.querySelectorAll(".opt")].forEach(o=>o.disabled=true);const fb=$("#fb_whoami");
+  if(ok==="true"){btn.classList.add("ok");fb.textContent="✅ Correct!";fb.className="fb good";G10+=10;setScore("g_whoami",G10);addXP(10);}
+  else{btn.classList.add("no");fb.textContent="❌ Read the clue again!";fb.className="fb bad";}
+  setTimeout(()=>{b.dataset.d="";g10i++;showWho();},1100);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  window.__TOTAL__=UNITS.reduce((s,u)=>s+u.mc.length+u.tf.length,0)+READINGS.reduce((s,r)=>s+r.mc.length+r.tf.length,0);
+  buildTabs();
+  const wrap=$("#wrap");
+  wrap.appendChild(renderHome());
+  wrap.appendChild(renderVocab());
+  wrap.appendChild(renderStories());
+  wrap.appendChild(renderReadings());
+  wrap.appendChild(renderGames());
+  wrap.appendChild(renderSpeak());
+  showTab(0);
+  updateProgress();
+}
+init();
+</script>
+</body>
+</html>
