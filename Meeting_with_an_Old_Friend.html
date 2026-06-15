@@ -59,18 +59,42 @@ p.lead{font-size:19px;color:var(--muted);margin:.2em 0 1em}
 .center{text-align:center}
 
 /* ---------- GHIBLI IMAGE FRAMES ---------- */
-.scene{display:grid;grid-template-columns:1fr;gap:0;margin:18px 0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
-.scene .art{position:relative;aspect-ratio:16/9;display:grid;place-items:center;text-align:center;color:#fff;padding:22px;
-  background:linear-gradient(135deg,#6d8bd0,#9bc1bc 55%,#f3d9a4);overflow:hidden}
-.scene .art::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 45%),radial-gradient(circle at 80% 80%,rgba(255,255,255,.18),transparent 40%)}
-.scene .art .em{font-size:60px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));position:relative;z-index:1}
-.scene .art .lbl{position:absolute;top:12px;left:12px;background:rgba(15,18,38,.55);color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:5px 11px;border-radius:999px;z-index:1}
-.scene .art .ghb{position:absolute;bottom:12px;right:12px;background:rgba(15,18,38,.55);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;z-index:1}
+.scene{margin:18px 0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);background:var(--card)}
+.scene .art{position:relative;aspect-ratio:16/9;display:grid;place-items:center;text-align:center;color:#fff;padding:22px;overflow:hidden;isolation:isolate;
+  background:var(--g,linear-gradient(160deg,#6d8bd0,#9bc1bc 55%,#f3d9a4));transition:transform .5s ease,filter .4s ease}
+/* painterly light, soft ground and ambient highlights */
+.scene .art::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 85% at 78% 16%,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),
+    radial-gradient(90% 70% at 20% 10%,rgba(255,255,255,.26),rgba(255,255,255,0) 40%),
+    radial-gradient(120% 60% at 50% 120%,rgba(40,55,85,.30),rgba(40,55,85,0) 55%),
+    linear-gradient(180deg,rgba(255,255,255,0) 52%,rgba(35,45,70,.26))}
+/* fine hand-painted grain + soft vignette */
+.scene .art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  box-shadow:inset 0 0 90px rgba(28,26,66,.34);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.18;mix-blend-mode:overlay}
+.scene .art .em{position:relative;z-index:3;font-size:74px;line-height:1;transition:transform .4s ease;
+  filter:drop-shadow(0 9px 15px rgba(0,0,0,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+@media(prefers-reduced-motion:no-preference){
+  .scene .art .em{animation:floatEm 6s ease-in-out infinite}
+  @keyframes floatEm{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+}
+.scene:hover .art{transform:scale(1.025)}
+.scene:hover .art .em{filter:drop-shadow(0 12px 20px rgba(0,0,0,.4)) drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.scene .art .lbl{position:absolute;top:12px;left:12px;z-index:3;background:rgba(15,18,38,.40);color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;
+  padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.scene .art .ghb{position:absolute;bottom:12px;right:12px;z-index:3;background:rgba(15,18,38,.40);color:#fff;font-size:11px;font-weight:700;
+  padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .scene .meta{background:var(--soft);padding:14px 16px}
-.scene .meta .prm{font-size:14px;color:var(--muted);margin:0 0 8px}
-.scene .meta .prm b{color:var(--pv)}
-.scene .meta .obs{font-size:16px;font-weight:700;margin:0;display:flex;gap:8px;align-items:flex-start}
+.scene .meta .obs{font-size:16.5px;font-weight:700;margin:0;display:flex;gap:9px;align-items:flex-start;color:var(--ink)}
 .scene .meta .obs::before{content:"👁";flex:0 0 auto}
+.scene .meta .note{margin:10px 0 0}
+.scene .meta .note summary{cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);list-style:none;outline:none}
+.scene .meta .note summary::-webkit-details-marker{display:none}
+.scene .meta .note[open] summary{margin-bottom:2px}
+.scene .meta .prm{font-size:13.5px;color:var(--muted);margin:6px 0 0;line-height:1.55}
+.scene .meta .prm b{color:var(--pv)}
 
 /* ---------- STORY TEXT ---------- */
 .story{font-size:18.5px;line-height:1.75}
@@ -1014,17 +1038,59 @@ function toggleTheme(){
   $("#themeBtn").textContent=dark?"🌙 Dark":"☀️ Light";
 }
 
+/* ---------- mood palette: each scene gets an atmosphere from its emoji ---------- */
+const SCENE_ART={
+ "🏙️":"linear-gradient(160deg,#7ea6d8,#a9c3d9 45%,#f6dcae)",   /* morning city  */
+ "☕":"linear-gradient(160deg,#c9925e,#e7b785 50%,#f6e2c2)",     /* warm coffee   */
+ "🪑":"linear-gradient(160deg,#bd8a5e,#dcae84 50%,#f3e1c4)",
+ "🥪":"linear-gradient(160deg,#c89a63,#e6c08a 50%,#f7e6c6)",
+ "🍵":"linear-gradient(160deg,#9c8f6a,#cdb98a 50%,#efe2bf)",
+ "🤗":"linear-gradient(160deg,#e6a36b,#f0c79a 50%,#fbe6cf)",     /* golden hug    */
+ "🤝":"linear-gradient(160deg,#d99a73,#e7bf9a 50%,#f7e3cf)",
+ "💛":"linear-gradient(160deg,#e9b15a,#f3d089 50%,#fbeec4)",
+ "🌳":"linear-gradient(160deg,#6fae84,#a9cf9a 50%,#e8e3a6)",     /* park green    */
+ "⚽":"linear-gradient(160deg,#6aa978,#a3cb8f 50%,#e3e0a0)",
+ "💬":"linear-gradient(160deg,#caa27a,#e6cba0 50%,#f6e8cd)",     /* cosy talk     */
+ "📞":"linear-gradient(160deg,#c7a583,#e4caa6 50%,#f5e9d2)",
+ "📝":"linear-gradient(160deg,#c3a988,#e2cda9 50%,#f4ead4)",
+ "🗓️":"linear-gradient(160deg,#c9aa82,#e6cda3 50%,#f6e9cf)",
+ "😂":"linear-gradient(160deg,#e9c45e,#f3da8b 50%,#fbf0c2)",     /* sunny joy     */
+ "🎶":"linear-gradient(160deg,#e7bd5a,#f1d585 50%,#fbeebf)",
+ "🎤":"linear-gradient(160deg,#d9a463,#eec78e 50%,#f9ead0)",
+ "💭":"linear-gradient(160deg,#9a8fc0,#c3b4dd 50%,#efe1ea)",     /* nostalgia     */
+ "⏳":"linear-gradient(160deg,#9888bd,#c1b1da 50%,#eee0e8)",
+ "⌛":"linear-gradient(160deg,#9888bd,#c1b1da 50%,#eee0e8)",
+ "📷":"linear-gradient(160deg,#a88faf,#cdb3cf 50%,#f0e1dc)",
+ "📖":"linear-gradient(160deg,#ad9499,#d2b8b4 50%,#f1e4d6)",
+ "🧸":"linear-gradient(160deg,#c79f8a,#e5c4ab 50%,#f6e6d4)",
+ "👫":"linear-gradient(160deg,#b29ac0,#d4bcd6 50%,#f3e3df)",
+ "⛰️":"linear-gradient(160deg,#7fa9c4,#b3cdb0 50%,#f0e3ab)",    /* mountain      */
+ "🌄":"linear-gradient(160deg,#e79a78,#f3c489 55%,#fbe7b6)",    /* sunrise       */
+ "🏕️":"linear-gradient(160deg,#4f7a6a,#86a981 50%,#d9d5a0)",   /* camping dusk  */
+ "🎒":"linear-gradient(160deg,#6e8f6f,#a3c08c 50%,#e6dca0)",
+ "😲":"linear-gradient(160deg,#86b0d4,#bcd3da 50%,#f6e6c4)",    /* bright surprise*/
+ "❄️":"linear-gradient(160deg,#9cc2dd,#cfe2ec 50%,#f2f6fb)",   /* snow cold     */
+ "🌧️":"linear-gradient(160deg,#5f7290,#8b9bb4 50%,#cfd6df)",   /* rain moody    */
+ "🚗":"linear-gradient(160deg,#566a8c,#86a0c2 50%,#d6cdbf)",    /* rainy drive   */
+ "😔":"linear-gradient(160deg,#6b7793,#9aa6c0 50%,#dde0e6)",    /* sad           */
+ "🛍️":"linear-gradient(160deg,#c6925f,#e6bd8d 50%,#f7e7cd)",   /* mall warm     */
+ "📱":"linear-gradient(160deg,#bf9f86,#e0c6a6 50%,#f4e9d6)"
+};
+const SCENE_ART_DEFAULT="linear-gradient(160deg,#6d8bd0,#9bc1bc 55%,#f3d9a4)";
+function artBG(img){return (img&&SCENE_ART[(img.em||"").trim()])||SCENE_ART_DEFAULT;}
+
 /* ---------- render a Ghibli scene frame ---------- */
 function sceneHTML(img,unitN,idx){
-  return `<figure class="scene" style="margin:18px 0">
-    <div class="art">
+  return `<figure class="scene">
+    <div class="art" style="--g:${artBG(img)}">
       <span class="lbl">${img.lbl||('Unit '+unitN+' · Scene '+idx)}</span>
       <span class="em">${img.em||"🎨"}</span>
       <span class="ghb">🎬 Studio-Ghibli style</span>
     </div>
     <figcaption class="meta">
-      <p class="prm"><b>Image prompt:</b> ${esc(img.prompt)}</p>
       <p class="obs">${esc(img.q)}</p>
+      <details class="note"><summary>🎨 Image prompt — generate this picture</summary>
+        <p class="prm">${esc(img.prompt)}</p></details>
     </figcaption>
   </figure>`;
 }
@@ -1118,13 +1184,16 @@ function renderHome(){
      <span class="tag">Virtual Class · A2–B1</span>
      <h1>Meeting with an Old Friend 👯</h1>
      <p class="lead">Reuníon con un viejo amigo — stories, readings, games and speaking to greet old friends, catch up and talk about memories.</p>
-     <div class="scene">
-       <div class="art" style="background:linear-gradient(135deg,#6d8bd0,#c9a3d4 55%,#f3d9a4)">
+     <figure class="scene">
+       <div class="art" style="--g:linear-gradient(160deg,#e0966b,#c4a3d2 52%,#f4e1b6)">
          <span class="lbl">Cover · Studio-Ghibli style</span><span class="em">👫☕🌳</span><span class="ghb">🎬 Studio-Ghibli style</span>
        </div>
-       <figcaption class="meta"><p class="prm"><b>Image prompt:</b> Studio-Ghibli style cover: ${CHARS} smiling and hugging in front of a cosy coffee shop on a sunny street, falling leaves, warm nostalgic light, hand-painted watercolor.</p>
-       <p class="obs">Who are the people? Where are they? How do they feel?</p></figcaption>
-     </div>
+       <figcaption class="meta">
+         <p class="obs">Who are the people? Where are they? How do they feel?</p>
+         <details class="note"><summary>🎨 Image prompt — generate this picture</summary>
+         <p class="prm">Studio-Ghibli style cover: ${CHARS} smiling and hugging in front of a cosy coffee shop on a sunny street, falling leaves, warm nostalgic light, hand-painted watercolor.</p></details>
+       </figcaption>
+     </figure>
      <h3>How to use this class</h3>
      <p class="muted">Move through the tabs at the top. Read each story, look carefully at the Studio-Ghibli image prompts and answer the observation questions out loud. Then complete the quizzes — they give you <b>XP ⭐</b>. Try the games and finish with the speaking tasks.</p>
      ${legendHTML()}
